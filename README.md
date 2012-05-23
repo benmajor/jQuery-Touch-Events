@@ -57,11 +57,11 @@ All of the events outlined above have been written using jQuery's ``event.specia
 ``$('#myElement').unbind('tap', hander);``
 
 **Using method wrapper:**
-``$('#myElement').tap(function(e) { console.log('User tapped #myElement'); });
+``$('#myElement').tap(function(e) { console.log('User tapped #myElement'); });``
 
 **Method chaining:**
-Chaining has also been preserved, so you can easily use these events in conjuction with other jQuery functions, or attach multiple events in a single, chained LOC:
-``$('#myElement').singletap(function() { console.log('User single-tapped #myElement'); }).doubletap(function() { console.log('User double-tapped #myElement'); });
+Chaining has also been preserved, so you can easily use these events in conjuction with other jQuery functions, or attach multiple events in a single, chained LOC:  
+``$('#myElement').singletap(function() { console.log('User single-tapped #myElement'); }).doubletap(function() { console.log('User double-tapped #myElement'); });``
 
 License:
 --------
