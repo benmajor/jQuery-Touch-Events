@@ -7,3 +7,18 @@ As explained, the events are each triggered by native touch events, or alternati
 
 Events Provided:
 ---------------
+
++ tapstart
++ tapend
++ tap
++ singletap
++ doubletap
++ taphold
++ swipe
++ swipeup
++ swiperight
++ swipedown
++ swipeleft
++ scrollstart
++ scrollend
++ orientationchange
