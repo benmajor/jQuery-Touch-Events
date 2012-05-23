@@ -56,7 +56,7 @@ All of the events outlined above have been written using jQuery's ``event.specia
 ``$('#myElement').die('tap', hander);``  
 ``$('#myElement').unbind('tap', hander);``
 
-**Using method wrapper:**
+**Using method wrapper:**  
 ``$('#myElement').tap(function(e) { console.log('User tapped #myElement'); });``
 
 **Method chaining:**  
