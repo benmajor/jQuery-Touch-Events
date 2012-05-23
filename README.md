@@ -59,9 +59,9 @@ All of the events outlined above have been written using jQuery's ``event.specia
 **Using method wrapper:**
 ``$('#myElement').tap(function(e) { console.log('User tapped #myElement'); });``
 
-**Method chaining:**
+**Method chaining:**  
 Chaining has also been preserved, so you can easily use these events in conjuction with other jQuery functions, or attach multiple events in a single, chained LOC:  
-``$('#myElement').singletap(function() { console.log('User single-tapped #myElement'); }).doubletap(function() { console.log('User double-tapped #myElement'); });``
+``$('#myElement').singletap(function() { console.log('singletap'); }).doubletap(function() { console.log('doubletap'); });``
 
 License:
 --------
