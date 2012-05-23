@@ -36,3 +36,39 @@ Triggered as soon as scrolling begins on the target element.
 Triggered as soon as scrolling is stopped on the target element.
 + **orientationchange**  
 This event is triggered when the orientiation of the device is changed. Please note that it uses throttling for non-mobile devices, or devices which do not support the native ``orientationchange`` event. In the latter instance, a detection of the viewport size change occurs.
+
+Usage:
+------
+All of the events outlined above have been written using jQuery's ``event.special`` object, and so can be used in conjuction with jQuery's event handling functions, as well as shortcut wrappers.
+
+**Binding a ``tap`` event to an element:**  
+``$('#myElement').bind('tap', function(e) { console.log('User tapped #myElement'); });``
+
+**Using with ``.on()`` and ``.live()``:**  
+``$('#myElement').live('tap', function(e) { console.log('User tapped #myElement'); });``  
+``$('#myElement').on('tap', function(e) { console.log('User tapped #myElement'); });``
+
+**Triggering the event:**  
+``$('#myElement').trigger('tap');``
+
+**Removing the event with ``.off()``, ``.die()`` and ``.unbind()``:**  
+``$('#myElement').off('tap', hander);``  
+``$('#myElement').die('tap', hander);``  
+``$('#myElement').unbind('tap', hander);``
+
+**Using method wrapper:**
+``$('#myElement').tap(function(e) { console.log('User tapped #myElement'); });
+
+**Method chaining:**
+Chaining has also been preserved, so you can easily use these events in conjuction with other jQuery functions, or attach multiple events in a single, chained LOC:
+``$('#myElement').singletap(function() { console.log('User single-tapped #myElement'); }).doubletap(function() { console.log('User double-tapped #myElement'); });
+
+License:
+--------
+Licensed under the MIT License:
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
