@@ -144,7 +144,7 @@
 				var delta = now - lastTouch;
 				window.clearTimeout(action);
 				
-				if(delta < settings.doubletap_int && delta > 0 && (e.target == origTarget))
+				if(delta < settings.doubletap_int && delta > 0 && (e.target == origTarget) && delta > 100)
 				{
 					$this.data('doubletapped', true);
 					window.clearTimeout(settings.tap_timer);
