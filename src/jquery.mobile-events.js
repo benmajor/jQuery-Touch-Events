@@ -269,9 +269,20 @@
 			}
 			
 			// Add gestures to all swipable areas
-			thisObject.addEventListener(settings.startevent, touchStart, false);
-			thisObject.addEventListener(settings.moveevent, touchMove, false);
-			thisObject.addEventListener(settings.endevent, touchEnd, false);
+			if(!thisObject.addEventListener)
+			{
+				// IE:
+				thisObject.attachEvent(settings.startevent, touchStart);
+				thisObject.attachEvent(settings.moveevent, touchMove);
+				thisObject.attachEvent(settings.endevent, touchEnd);
+			}
+			else
+			{
+				// Everything else:
+				thisObject.addEventListener(settings.startevent, touchStart, false);
+				thisObject.addEventListener(settings.moveevent, touchMove, false);
+				thisObject.addEventListener(settings.endevent, touchEnd, false);
+			}
 		}
 	};
 	
