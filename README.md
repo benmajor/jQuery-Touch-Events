@@ -66,9 +66,13 @@ Chaining has also been preserved, so you can easily use these events in conjucti
 Defining Thresholds:
 --------------------
 You can also define custom thresholds to be used for ``swipe`` events (``swipeup``, ``swiperight``, ``swipedown`` and ``swipeleft``) to prevent interference with scrolling and other events. To do so, simply assign a `data-xthreshold` or `date-ythreshold` to the target element as follows:
+
 ``<div id="mySwiper" data-xthreshold="500"></div>``
+
 The value you define is the difference in pixels that the user must move before the event is triggered on the target element. If no threshold is defined, a default of 50px will be used. 
+
 ``data-xthreshold`` defines the horizontal threshold.
+
 ``data-ythreshold`` defines the vertical threshold.
 
 
