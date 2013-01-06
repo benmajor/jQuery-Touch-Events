@@ -249,14 +249,12 @@
 			// Store coordinates as finger is swiping
 			function touchMove(event)
 			{
-				event.preventDefault();
+				//event.preventDefault();
+				event.stopPropagation();
 				finalCoord.x = (settings.touch_capable) ? event.targetTouches[0].pageX : event.pageX;
 				finalCoord.y = (settings.touch_capable) ? event.targetTouches[0].pageY : event.pageY;
 				window.clearTimeout(settings.hold_timer);
-			}
-			
-			function touchEnd(e)
-			{
+				
 				var swipedir;
 				
 				// We need to check if the element to which the event was bound contains a data-xthreshold | data-vthreshold:
@@ -275,21 +273,19 @@
 					$this.trigger('swipe').trigger(swipedir);
 				}
 			}
-			
+
 			// Add gestures to all swipable areas
 			if(!thisObject.addEventListener)
 			{
 				// IE:
 				thisObject.attachEvent(settings.startevent, touchStart);
 				thisObject.attachEvent(settings.moveevent, touchMove);
-				thisObject.attachEvent(settings.endevent, touchEnd);
 			}
 			else
 			{
 				// Everything else:
 				thisObject.addEventListener(settings.startevent, touchStart, false);
 				thisObject.addEventListener(settings.moveevent, touchMove, false);
-				thisObject.addEventListener(settings.endevent, touchEnd, false);
 			}
 		}
 	};
