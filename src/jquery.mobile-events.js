@@ -234,6 +234,7 @@
 		setup: function() {
 			var thisObject = this,
 			    $this = $(thisObject),
+				started = false,
 				originalCoord = { x: 0, y: 0 },
 			    finalCoord    = { x: 0, y: 0 };
 	
@@ -242,8 +243,9 @@
 			{
 				originalCoord.x = (settings.touch_capable) ? event.targetTouches[0].pageX : event.pageX;
 				originalCoord.y = (settings.touch_capable) ? event.targetTouches[0].pageY : event.pageY;
-				finalCoord.x = originalCoord.x
-				finalCoord.y = originalCoord.y
+				finalCoord.x = originalCoord.x;
+				finalCoord.y = originalCoord.y;
+				started = true;
 			}
 			
 			// Store coordinates as finger is swiping
@@ -268,10 +270,20 @@
 				if(originalCoord.x < finalCoord.x && (finalCoord.x - originalCoord.x > h_threshold)) { swipedir = 'swiperight'; }
 				if(originalCoord.y < finalCoord.y && (finalCoord.y - originalCoord.y > v_threshold)) { swipedir = 'swipedown'; }
 				if(originalCoord.x > finalCoord.x && (originalCoord.x - finalCoord.x > h_threshold)) { swipedir = 'swipeleft'; }
-				if(swipedir != undefined)
+				if(swipedir != undefined && started)
 				{
+					originalCoord.x = 0;
+					originalCoord.y = 0;
+					finalCoord.x = 0;
+					finalCoord.y = 0;
 					$this.trigger('swipe').trigger(swipedir);
+					started = false;
 				}
+			}
+			
+			function touchEnd(event)
+			{
+				started = false;
 			}
 
 			// Add gestures to all swipable areas
@@ -280,12 +292,14 @@
 				// IE:
 				thisObject.attachEvent(settings.startevent, touchStart);
 				thisObject.attachEvent(settings.moveevent, touchMove);
+				thisObject.attachEvent(settings.endevent, touchEnd);
 			}
 			else
 			{
 				// Everything else:
 				thisObject.addEventListener(settings.startevent, touchStart, false);
 				thisObject.addEventListener(settings.moveevent, touchMove, false);
+				thisObject.addEventListener(settings.endevent, touchEnd, false);
 			}
 		}
 	};
