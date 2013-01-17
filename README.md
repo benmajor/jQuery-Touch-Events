@@ -75,6 +75,9 @@ The value you define is the difference in pixels that the user must move before 
 
 ``data-ythreshold`` defines the vertical threshold.
 
+Requirements:
+-------------
+The library works with jQuery 1.8.0+. **Please note that it is not supported by jQuery 1.9.0+ at this time**. Support for later versions of jQuery is currently being worked on, and this document will be updated as soon as support is added for same.
 
 License:
 --------
