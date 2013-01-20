@@ -26,19 +26,19 @@
  */
 
 (function($) {
-
+	$.attrFn = $.attrFn || {};
 	var settings = {
 		swipe_h_threshold 	: 50,
 		swipe_v_threshold 	: 50,
 		taphold_threshold 	: 750,
 		doubletap_int       : 500,
-		touch_capable       : ('ontouchstart' in document.documentElement),
+		touch_capable       : ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1),
 		orientation_support : ('orientation' in window && 'onorientationchange' in window),
-		startevent        	: ('ontouchstart' in document.documentElement) ? 'touchstart' : 'mousedown',
-		endevent		  	: ('ontouchstart' in document.documentElement) ? 'touchend' : 'mouseup',
-		moveevent         	: ('ontouchstart' in document.documentElement) ? 'touchmove' : 'mousemove',
-		tapevent		  	: ('ontouchstart' in document.documentElement) ? 'tap' : 'click',
-		scrollevent       	: ('ontouchstart' in document.documentElement) ? 'touchmove' : 'scroll',
+		startevent        	: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchstart' : 'mousedown',
+		endevent		  	: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchend' : 'mouseup',
+		moveevent         	: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchmove' : 'mousemove',
+		tapevent		  	: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'tap' : 'click',
+		scrollevent       	: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchmove' : 'scroll',
 		hold_timer 			: null,
 		tap_timer 			: null
 	};
@@ -66,7 +66,8 @@
 				}
 				else
 				{
-					triggerCustomEvent(thisObject, 'tapstart', e)
+					triggerCustomEvent(thisObject, 'tapstart', e);
+					return true;
 				}
 			});
 		}
@@ -113,6 +114,7 @@
 							triggerCustomEvent(thisObject, 'taphold', e);
 						}
 					}, settings.taphold_threshold);
+					return true;
 				}
 			}).bind(settings.endevent, function() {
 				window.clearTimeout(settings.hold_timer);
@@ -137,6 +139,7 @@
 				{
 					$this.data('doubletapped', false);
 					origTarget = e.target;
+					return true;
 				}
 			}).bind(settings.endevent, function(e) {
 				var now = new Date().getTime();
@@ -178,6 +181,7 @@
 				{
 					startTime = new Date().getTime();
 					origTarget = e.target;
+					return true;
 				}
 			}).bind(settings.endevent, function(e) {
 				if(e.target == origTarget)
@@ -202,8 +206,9 @@
 				origTarget = null,
 				start_time,
 				start_pos = { x : 0, y : 0 };
-
+			
 			$this.bind(settings.startevent, function(e) {
+				
 				if(e.which && e.which !== 1)
 				{
 					return false;
@@ -215,6 +220,7 @@
 					start_pos.y = (settings.touch_capabale) ? e.targetTouches[0].pageY : e.pageY;
 					start_time = new Date().getTime();
 					origTarget = e.target;
+					return true;
 				}
 			}).bind(settings.endevent, function(e) { 
 				// Only trigger if they've started, and the target matches:
@@ -223,6 +229,7 @@
 				
 				if(origTarget == e.target && started && ((new Date().getTime() - start_time) < settings.taphold_threshold) && (start_pos.x == end_x && start_pos.y == end_y))
 				{
+					
 					triggerCustomEvent(thisObject, 'tap', e);
 				}
 			});
@@ -368,6 +375,7 @@
 			last_orientation = get_orientation();
 
 			win.bind('throttledresize', handler);
+			return true;
 		},
 		teardown: function()
 		{
@@ -377,6 +385,7 @@
 			}
 
 			win.unbind('throttledresize', handler);
+			return true;
 		},
 		add: function(handleObj)
 		{
@@ -466,7 +475,8 @@
 	function triggerCustomEvent( obj, eventType, event ) {
 		var originalType = event.type;
 		event.type = eventType;
-		$.event.handle.call( obj, event );
+		
+		$.event.dispatch.call( obj, event );
 		event.type = originalType;
 	}
 	
