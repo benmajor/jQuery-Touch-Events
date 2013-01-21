@@ -32,13 +32,16 @@
 		swipe_v_threshold 	: 50,
 		taphold_threshold 	: 750,
 		doubletap_int       : 500,
+		
 		touch_capable       : ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1),
 		orientation_support : ('orientation' in window && 'onorientationchange' in window),
-		startevent        	: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchstart' : 'mousedown',
-		endevent		  	: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchend' : 'mouseup',
-		moveevent         	: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchmove' : 'mousemove',
-		tapevent		  	: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'tap' : 'click',
-		scrollevent       	: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchmove' : 'scroll',
+		
+		startevent        	: 'touchstart mousedown',
+		endevent		  	: 'touchend mouseup',
+		moveevent         	: 'touchmove mousemove',
+		tapevent		  	: 'tap click',
+		scrollevent       	: 'touchmove scroll',
+		
 		hold_timer 			: null,
 		tap_timer 			: null
 	};
