@@ -106,11 +106,11 @@
 				{
 					$this.data('tapheld', false);
 					origTarget = e.target;
-					start_pos.x = (settings.touch_capabale) ? e.targetTouches[0].pageX : e.pageX;
-					start_pos.y = (settings.touch_capabale) ? e.targetTouches[0].pageY : e.pageY;
+					start_pos.x = (settings.touch_capable) ? e.targetTouches[0].pageX : e.pageX;
+					start_pos.y = (settings.touch_capable) ? e.targetTouches[0].pageY : e.pageY;
 					settings.hold_timer = window.setTimeout(function() {
-						var end_x = (settings.touch_capabale) ? e.targetTouches[0].pageX : e.pageX,
-							end_y = (settings.touch_capabale) ? e.targetTouches[0].pageY : e.pageY;
+						var end_x = (settings.touch_capable) ? e.targetTouches[0].pageX : e.pageX,
+							end_y = (settings.touch_capable) ? e.targetTouches[0].pageY : e.pageY;
 						if(e.target == origTarget && (start_pos.x == end_x && start_pos.y == end_y))
 						{
 							$this.data('tapheld', true);
@@ -219,16 +219,16 @@
 				else
 				{
 					started = true;
-					start_pos.x = (settings.touch_capabale) ? e.targetTouches[0].pageX : e.pageX;
-					start_pos.y = (settings.touch_capabale) ? e.targetTouches[0].pageY : e.pageY;
+					start_pos.x = (settings.touch_capable) ? e.targetTouches[0].pageX : e.pageX;
+					start_pos.y = (settings.touch_capable) ? e.targetTouches[0].pageY : e.pageY;
 					start_time = new Date().getTime();
 					origTarget = e.target;
 					return true;
 				}
 			}).bind(settings.endevent, function(e) { 
 				// Only trigger if they've started, and the target matches:
-				var end_x = (settings.touch_capabale) ? e.targetTouches[0].pageX : e.pageX,
-					end_y = (settings.touch_capabale) ? e.targetTouches[0].pageY : e.pageY;
+				var end_x = (settings.touch_capable) ? e.targetTouches[0].pageX : e.pageX,
+					end_y = (settings.touch_capable) ? e.targetTouches[0].pageY : e.pageY;
 				
 				if(origTarget == e.target && started && ((new Date().getTime() - start_time) < settings.taphold_threshold) && (start_pos.x == end_x && start_pos.y == end_y))
 				{
