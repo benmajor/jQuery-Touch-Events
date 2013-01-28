@@ -69,7 +69,7 @@
 				}
 				else
 				{
-					triggerCustomEvent(thisObject, 'tapstart', e);
+					triggerCustomEvent(thisObject, settings.startevent, e);
 					return true;
 				}
 			});
@@ -83,7 +83,7 @@
 			    $this = $(thisObject);
 			
 			$this.bind(settings.endevent, function(e) {
-				triggerCustomEvent(thisObject, 'tapend', e);
+				triggerCustomEvent(thisObject, settings.endevent, e);
 			});
 		}
 	}
