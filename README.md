@@ -87,7 +87,7 @@ The value you define is the difference in pixels that the user must move before 
 
 Requirements:
 -------------
-The library works with jQuery 1.7.0+. All major browsers have been tested without problem. The library is not compatible with jQuery > 1.7.
+The library works with jQuery 1.7.0+. All major browsers have been tested without problem. The library is not compatible with jQuery < 1.7.
 
 License:
 --------
