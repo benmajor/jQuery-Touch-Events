@@ -87,9 +87,7 @@ The value you define is the difference in pixels that the user must move before 
 
 Requirements:
 -------------
-The library works with jQuery 1.7.0+. All major browsers have been tested without problem. 
-
-It should be noted that since 17.x.x, Google Chrome reports support for touch-based events, even if the device itself doesn't. This cause a rewrite of our sniffing technique, as the library was firing touch events which were supported by the browser, but no the client's hardware. It will be necessary to monitor the situation in the future, as there is currently an option switch to disable support for touch events in desktop versions of Chrome. Please make thorough tests when debugging in Chrome under Windows 8.
+The library works with jQuery 1.7.0+. All major browsers have been tested without problem. The library is not compatible with jQuery > 1.7.
 
 License:
 --------
