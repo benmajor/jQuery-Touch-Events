@@ -69,7 +69,7 @@
 				}
 				else
 				{
-					triggerCustomEvent(thisObject, settings.startevent, e);
+					triggerCustomEvent(thisObject, 'tapstart', e);
 					return true;
 				}
 			});
@@ -83,7 +83,8 @@
 			    $this = $(thisObject);
 			
 			$this.bind(settings.endevent, function(e) {
-				triggerCustomEvent(thisObject, settings.endevent, e);
+				triggerCustomEvent(thisObject, 'tapend', e);
+				return true;
 			});
 		}
 	}
@@ -295,22 +296,10 @@
 			{
 				started = false;
 			}
-
-			// Add gestures to all swipable areas
-			if(!thisObject.addEventListener)
-			{
-				// IE:
-				thisObject.attachEvent(settings.startevent, touchStart);
-				thisObject.attachEvent(settings.moveevent, touchMove);
-				thisObject.attachEvent(settings.endevent, touchEnd);
-			}
-			else
-			{
-				// Everything else:
-				thisObject.addEventListener(settings.startevent, touchStart, false);
-				thisObject.addEventListener(settings.moveevent, touchMove, false);
-				thisObject.addEventListener(settings.endevent, touchEnd, false);
-			}
+			
+			$this.bind(settings.startevent, touchStart);
+			$this.bind(settings.moveevent, touchMove);
+			$this.bind(settings.endevent, touchEnd);
 		}
 	};
 	
@@ -476,6 +465,7 @@
 	
 	// Trigger a custom event:
 	function triggerCustomEvent( obj, eventType, event ) {
+		
 		var originalType = event.type;
 		event.type = eventType;
 		
