@@ -31,19 +31,19 @@
 		swipe_h_threshold 	: 50,
 		swipe_v_threshold 	: 50,
 		taphold_threshold 	: 750,
-		doubletap_int       : 500,
+		doubletap_int		: 500,
 		
-		touch_capable       : ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1),
-		orientation_support : ('orientation' in window && 'onorientationchange' in window),
+		touch_capable		: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1),
+		orientation_support	: ('orientation' in window && 'onorientationchange' in window),
 		
-		startevent        	: 'touchstart mousedown',
-		endevent		  	: 'touchend mouseup',
-		moveevent         	: 'touchmove mousemove',
-		tapevent		  	: 'tap click',
-		scrollevent       	: 'touchmove scroll',
+		startevent		: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchstart' : 'mousedown',
+		endevent		: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchend' : 'mouseup',
+		moveevent		: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchmove' : 'mousemove',
+		tapevent		: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'tap' : 'click',
+		scrollevent		: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchmove' : 'scroll',
 		
-		hold_timer 			: null,
-		tap_timer 			: null
+		hold_timer		: null,
+		tap_timer		: null
 	};
 	
 	// Add Event shortcuts:
@@ -107,11 +107,13 @@
 				{
 					$this.data('tapheld', false);
 					origTarget = e.target;
-					start_pos.x = (settings.touch_capable) ? e.targetTouches[0].pageX : e.pageX;
-					start_pos.y = (settings.touch_capable) ? e.targetTouches[0].pageY : e.pageY;
+					start_pos.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
+					start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
+					
 					settings.hold_timer = window.setTimeout(function() {
-						var end_x = (settings.touch_capable) ? e.targetTouches[0].pageX : e.pageX,
-							end_y = (settings.touch_capable) ? e.targetTouches[0].pageY : e.pageY;
+						
+						var end_x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX,
+							end_y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
 						if(e.target == origTarget && (start_pos.x == end_x && start_pos.y == end_y))
 						{
 							$this.data('tapheld', true);
@@ -174,9 +176,10 @@
 			var thisObject = this,
 			    $this = $(thisObject),
 				origTarget = null,
-				startTime  = null;
+				startTime  = null,
+				 start_pos = { x: 0, y: 0 };
 				
-			$this.bind(settings.startevent, function(e) {
+			$this.bind('touchstart', function(e) {
 				if(e.which && e.which !== 1)
 				{
 					return false;
@@ -185,10 +188,18 @@
 				{
 					startTime = new Date().getTime();
 					origTarget = e.target;
+					
+					start_pos.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
+					start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
+					
 					return true;
 				}
 			}).bind(settings.endevent, function(e) {
-				if(e.target == origTarget)
+				var end_x = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX,
+				    end_y = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY;
+				//alert(end_x+', '+start_pos.x);	
+				
+				if(e.target == origTarget && (start_pos.x == end_x && start_pos.y == end_y))
 				{
 					settings.tap_timer = window.setTimeout(function() {
 						if(!$this.data('doubletapped') && !$this.data('tapheld'))
@@ -212,7 +223,6 @@
 				start_pos = { x : 0, y : 0 };
 			
 			$this.bind(settings.startevent, function(e) {
-				
 				if(e.which && e.which !== 1)
 				{
 					return false;
@@ -220,20 +230,20 @@
 				else
 				{
 					started = true;
-					start_pos.x = (settings.touch_capable) ? e.targetTouches[0].pageX : e.pageX;
-					start_pos.y = (settings.touch_capable) ? e.targetTouches[0].pageY : e.pageY;
+					//alert(start_pos);
+					start_pos.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
+					start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
 					start_time = new Date().getTime();
 					origTarget = e.target;
 					return true;
 				}
-			}).bind(settings.endevent, function(e) { 
+			}).bind(settings.endevent, function(e) {
 				// Only trigger if they've started, and the target matches:
-				var end_x = (settings.touch_capable) ? e.targetTouches[0].pageX : e.pageX,
-					end_y = (settings.touch_capable) ? e.targetTouches[0].pageY : e.pageY;
+				var end_x = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX,
+					end_y = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY;
 				
 				if(origTarget == e.target && started && ((new Date().getTime() - start_time) < settings.taphold_threshold) && (start_pos.x == end_x && start_pos.y == end_y))
 				{
-					
 					triggerCustomEvent(thisObject, 'tap', e);
 				}
 			});
@@ -250,22 +260,22 @@
 			    finalCoord    = { x: 0, y: 0 };
 	
 			// Screen touched, store the original coordinate
-			function touchStart(event)
+			function touchStart(e)
 			{
-				originalCoord.x = (settings.touch_capable) ? event.targetTouches[0].pageX : event.pageX;
-				originalCoord.y = (settings.touch_capable) ? event.targetTouches[0].pageY : event.pageY;
+				originalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
+				originalCoord.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
 				finalCoord.x = originalCoord.x;
 				finalCoord.y = originalCoord.y;
 				started = true;
 			}
 			
 			// Store coordinates as finger is swiping
-			function touchMove(event)
+			function touchMove(e)
 			{
 				//event.preventDefault();
 				event.stopPropagation();
-				finalCoord.x = (settings.touch_capable) ? event.targetTouches[0].pageX : event.pageX;
-				finalCoord.y = (settings.touch_capable) ? event.targetTouches[0].pageY : event.pageY;
+				finalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
+				finalCoord.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
 				window.clearTimeout(settings.hold_timer);
 				
 				var swipedir;
