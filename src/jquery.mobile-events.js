@@ -176,8 +176,7 @@
 			var thisObject = this,
 			    $this = $(thisObject),
 				origTarget = null,
-				startTime  = null,
-				 start_pos = { x: 0, y: 0 };
+				startTime  = null
 				
 			$this.bind('touchstart', function(e) {
 				if(e.which && e.which !== 1)
@@ -188,18 +187,10 @@
 				{
 					startTime = new Date().getTime();
 					origTarget = e.target;
-					
-					start_pos.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
-					start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
-					
 					return true;
 				}
-			}).bind(settings.endevent, function(e) {
-				var end_x = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX,
-				    end_y = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY;
-				//alert(end_x+', '+start_pos.x);	
-				
-				if(e.target == origTarget && (start_pos.x == end_x && start_pos.y == end_y))
+			}).bind(settings.endevent, function(e) {				
+				if(e.target == origTarget)
 				{
 					settings.tap_timer = window.setTimeout(function() {
 						if(!$this.data('doubletapped') && !$this.data('tapheld'))
