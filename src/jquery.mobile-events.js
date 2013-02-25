@@ -176,7 +176,8 @@
 			var thisObject = this,
 			    $this = $(thisObject),
 				origTarget = null,
-				startTime  = null
+				 startTime = null,
+				 start_pos = { x: 0, y: 0 };
 				
 			$this.bind(settings.startevent, function(e) {
 				if(e.which && e.which !== 1)
@@ -187,14 +188,23 @@
 				{
 					startTime = new Date().getTime();
 					origTarget = e.target;
+					
+					// Get the start x and y position:
+					start_pos.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
+					start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
+					
 					return true;
 				}
 			}).bind(settings.endevent, function(e) {
 				
 				if(e.target == origTarget)
 				{
-					settings.tap_timer = window.setTimeout(function() {
-						if(!$this.data('doubletapped') && !$this.data('tapheld'))
+					// Get the end point:
+					end_pos_x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
+					end_pos_y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
+					
+					settings.tap_timer = window.setTimeout(function() {	
+						if(!$this.data('doubletapped') && !$this.data('tapheld') && (start_pos.x == end_pos_x) && (start_pos.y == end_pos_y))
 						{
 							triggerCustomEvent(thisObject, 'singletap', e);
 						}
