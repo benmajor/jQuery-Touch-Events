@@ -178,7 +178,7 @@
 				origTarget = null,
 				startTime  = null
 				
-			$this.bind('touchstart', function(e) {
+			$this.bind(settings.startevent, function(e) {
 				if(e.which && e.which !== 1)
 				{
 					return false;
@@ -189,7 +189,8 @@
 					origTarget = e.target;
 					return true;
 				}
-			}).bind(settings.endevent, function(e) {				
+			}).bind(settings.endevent, function(e) {
+				
 				if(e.target == origTarget)
 				{
 					settings.tap_timer = window.setTimeout(function() {
