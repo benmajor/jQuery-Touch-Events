@@ -74,7 +74,7 @@
 				}
 			});
 		}
-	}
+	};
 	
 	// tapend Event:
 	$.event.special.tapend = {
@@ -87,7 +87,7 @@
 				return true;
 			});
 		}
-	}
+	};
 	
 	// taphold Event:
 	$.event.special.taphold = {
@@ -129,7 +129,7 @@
 				window.clearTimeout(settings.hold_timer);
 			});
 		}
-	}
+	};
 	
 	// doubletap Event:
 	$.event.special.doubletap = {
@@ -170,7 +170,7 @@
 				$this.data('lastTouch', now);
 			});
 		}
-	}
+	};
 	
 	// singletap Event:
 	// This is used in conjuction with doubletap when both events are needed on the same element
@@ -214,7 +214,7 @@
 				}
 			});
 		}
-	}
+	};
 	
 	// tap Event:
 	$.event.special.tap = {
@@ -276,8 +276,7 @@
 			// Store coordinates as finger is swiping
 			function touchMove(e)
 			{
-				//event.preventDefault();
-				event.stopPropagation();
+				e.stopPropagation();
 				finalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
 				finalCoord.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
 				window.clearTimeout(settings.hold_timer);
