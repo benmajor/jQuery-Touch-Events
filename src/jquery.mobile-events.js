@@ -114,15 +114,18 @@
 						
 						var end_x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX,
 							end_y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
+							
 						if(e.target == origTarget && (start_pos.x == end_x && start_pos.y == end_y))
 						{
 							$this.data('tapheld', true);
 							triggerCustomEvent(thisObject, 'taphold', e);
 						}
 					}, settings.taphold_threshold);
+					
 					return true;
 				}
 			}).bind(settings.endevent, function() {
+				$this.data('tapheld', false);
 				window.clearTimeout(settings.hold_timer);
 			});
 		}
@@ -192,7 +195,6 @@
 					// Get the start x and y position:
 					start_pos.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
 					start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
-					
 					return true;
 				}
 			}).bind(settings.endevent, function(e) {
@@ -200,8 +202,8 @@
 				if(e.target == origTarget)
 				{
 					// Get the end point:
-					end_pos_x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
-					end_pos_y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
+					end_pos_x = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX;
+					end_pos_y = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY;
 					
 					settings.tap_timer = window.setTimeout(function() {	
 						if(!$this.data('doubletapped') && !$this.data('tapheld') && (start_pos.x == end_pos_x) && (start_pos.y == end_pos_y))
