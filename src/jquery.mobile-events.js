@@ -27,6 +27,19 @@
 
 (function($) {
 	$.attrFn = $.attrFn || {};
+	
+	// navigator.userAgent.toLowerCase() isn't reliable for Chrome installs
+	// on mobile devices. As such, we will create a boolean isChromeDesktop
+	// The reason that we need to do this is because Chrome annoyingly
+	// purports support for touch events even if the underlying hardware
+	// does not!
+		
+	var isChromeDesktop = ((navigator.userAgent.toLowerCase().indexOf('chrome') > -1) && (
+						   (navigator.userAgent.toLowerCase().indexOf('windows') > -1) ||
+						   (navigator.userAgent.toLowerCase().indexOf('macintosh') > -1) ||
+						   (navigator.userAgent.toLowerCase().indexOf('linux') > -1)
+						  ));
+	
 	var settings = {
 		swipe_h_threshold 	: 50,
 		swipe_v_threshold 	: 50,
@@ -36,11 +49,11 @@
 		touch_capable		: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1),
 		orientation_support	: ('orientation' in window && 'onorientationchange' in window),
 		
-		startevent		: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchstart' : 'mousedown',
-		endevent		: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchend' : 'mouseup',
-		moveevent		: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchmove' : 'mousemove',
-		tapevent		: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'tap' : 'click',
-		scrollevent		: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) ? 'touchmove' : 'scroll',
+		startevent		: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'touchstart' : 'mousedown',
+		endevent		: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'touchend' : 'mouseup',
+		moveevent		: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'touchmove' : 'mousemove',
+		tapevent		: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'tap' : 'click',
+		scrollevent		: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'touchmove' : 'scroll',
 		
 		hold_timer		: null,
 		tap_timer		: null
@@ -271,6 +284,11 @@
 				finalCoord.x = originalCoord.x;
 				finalCoord.y = originalCoord.y;
 				started = true;
+				
+				// For some reason, we need to add a 100ms pause in order to trigger swiping
+				// on Playbooks:
+				var dt = new Date();
+				while ((new Date()) - dt < 100) { }				
 			}
 			
 			// Store coordinates as finger is swiping
