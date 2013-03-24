@@ -247,7 +247,6 @@
 				else
 				{
 					started = true;
-					//alert(start_pos);
 					start_pos.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
 					start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
 					start_time = new Date().getTime();
@@ -318,8 +317,8 @@
 					originalCoord.y = 0;
 					finalCoord.x = 0;
 					finalCoord.y = 0;
-					$this.trigger('swipe').trigger(swipedir);
 					started = false;
+					$this.trigger('swipe').trigger(swipedir);
 				}
 			}
 			
