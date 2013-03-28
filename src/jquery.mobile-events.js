@@ -25,6 +25,7 @@
  * 
  */
 
+
 (function($) {
 	$.attrFn = $.attrFn || {};
 	
@@ -46,7 +47,7 @@
 		taphold_threshold 	: 750,
 		doubletap_int		: 500,
 		
-		touch_capable		: ('ontouchstart' in document.documentElement && navigator.userAgent.toLowerCase().indexOf('chrome') == -1),
+		touch_capable		: ('ontouchstart' in document.documentElement && !isChromeDesktop),
 		orientation_support	: ('orientation' in window && 'onorientationchange' in window),
 		
 		startevent		: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'touchstart' : 'mousedown',
@@ -60,7 +61,7 @@
 	};
 	
 	// Add Event shortcuts:
-	$.each(('tapstart tapend tap singletap doubletap taphold swipe swipeup swiperight swipedown swipeleft scrollstart scrollend orientationchange').split(' '), function(i, name) {
+	$.each(('tapstart tapend tap singletap doubletap taphold swipe swipeup swiperight swipedown swipeleft swipeend scrollstart scrollend orientationchange').split(' '), function(i, name) {
 		$.fn[name] = function(fn)
 		{
 			return fn ? this.bind(name, fn) : this.trigger(name);
@@ -82,7 +83,22 @@
 				}
 				else
 				{
-					triggerCustomEvent(thisObject, 'tapstart', e);
+					// Touch event data:
+					var origEvent = e.originalEvent;
+					var touchData = {
+						'position': {
+							'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
+							'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY,
+						},
+						'offset': {
+							'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
+							'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY,
+						},
+						'time': new Date().getTime(),
+						'target': e.target
+					};
+					
+					triggerCustomEvent(thisObject, 'tapstart', e, touchData);
 					return true;
 				}
 			});
@@ -96,7 +112,21 @@
 			    $this = $(thisObject);
 			
 			$this.bind(settings.endevent, function(e) {
-				triggerCustomEvent(thisObject, 'tapend', e);
+				// Touch event data:
+				var origEvent = e.originalEvent;
+				var touchData = {
+					'position': {
+						'x': (settings.touch_capable) ? origEvent.changedTouches[0].screenX : e.screenX,
+						'y': (settings.touch_capable) ? origEvent.changedTouches[0].screenY : e.screenY
+					},
+					'offset': {
+						'x': (settings.touch_capable) ? origEvent.changedTouches[0].pageX - origEvent.changedTouches[0].target.offsetLeft : e.offsetX,
+						'y': (settings.touch_capable) ? origEvent.changedTouches[0].pageY - origEvent.changedTouches[0].target.offsetTop : e.offsetY
+					},
+					'time': new Date().getTime(),
+					'target': e.target
+				};
+				triggerCustomEvent(thisObject, 'tapend', e, touchData);
 				return true;
 			});
 		}
@@ -120,6 +150,18 @@
 				{
 					$this.data('tapheld', false);
 					origTarget = e.target;
+					
+					var origEvent = e.originalEvent;
+					var start_time = new Date().getTime(),
+					startPosition = {
+						'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
+						'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
+					},
+					startOffset = {
+						'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
+						'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
+					};
+					
 					start_pos.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
 					start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
 					
@@ -131,7 +173,31 @@
 						if(e.target == origTarget && (start_pos.x == end_x && start_pos.y == end_y))
 						{
 							$this.data('tapheld', true);
-							triggerCustomEvent(thisObject, 'taphold', e);
+							
+							var end_time = new Date().getTime(),
+					         endPosition = {
+								'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
+								'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
+							},
+					        endOffset = {
+								'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
+								'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
+							};
+							    duration = end_time - start_time;
+							
+							// Build the touch data:
+							var touchData = {
+								'startTime': start_time,
+								  'endTime': end_time,
+							'startPosition': startPosition,
+							  'startOffset': startOffset,
+							  'endPosition': endPosition,
+							    'endOffset': endOffset,
+							   'duration': duration,
+							       'target': e.target
+							}
+							
+							triggerCustomEvent(thisObject, 'taphold', e, touchData);
 						}
 					}, settings.taphold_threshold);
 					
@@ -150,7 +216,8 @@
 			var thisObject = this,
 			    $this = $(thisObject),
 				origTarget,
-				action;
+				action,
+				firstTap;
 			
 			$this.bind(settings.startevent, function(e) {
 				if(e.which && e.which !== 1)
@@ -161,6 +228,20 @@
 				{
 					$this.data('doubletapped', false);
 					origTarget = e.target;
+					var origEvent = e.originalEvent;
+					firstTap = {
+						'position': {
+						    'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
+							'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
+						},
+						'offset': {
+							'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
+							'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
+						},
+						'time': new Date().getTime(),
+						'target': e.target
+					};
+					
 					return true;
 				}
 			}).bind(settings.endevent, function(e) {
@@ -173,7 +254,28 @@
 				{
 					$this.data('doubletapped', true);
 					window.clearTimeout(settings.tap_timer);
-					triggerCustomEvent(thisObject, 'doubletap', e);
+					
+					// Now get the current event:
+					var lastTap = {
+						'position': {
+						    'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
+							'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
+						},
+						'offset': {
+							'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
+							'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
+						},
+						'time': new Date().getTime(),
+						'target': e.target
+					}
+					
+					var touchData = {
+						 'firstTap': firstTap,
+						'secondTap': lastTap,
+						 'interval': lastTap.time - firstTap.time
+					};
+					
+					triggerCustomEvent(thisObject, 'doubletap', e, touchData);
 				}
 				else
 				{
@@ -221,7 +323,20 @@
 					settings.tap_timer = window.setTimeout(function() {	
 						if(!$this.data('doubletapped') && !$this.data('tapheld') && (start_pos.x == end_pos_x) && (start_pos.y == end_pos_y))
 						{
-							triggerCustomEvent(thisObject, 'singletap', e);
+							var origEvent = e.originalEvent;
+							var touchData = {
+								'position': {
+									'x': (settings.touch_capable) ? origEvent.changedTouches[0].screenX : e.screenX,
+									'y': (settings.touch_capable) ? origEvent.changedTouches[0].screenY : e.screenY,
+								},
+								'offset': {
+									'x': (settings.touch_capable) ? origEvent.changedTouches[0].pageX - origEvent.changedTouches[0].target.offsetLeft : e.offsetX,
+									'y': (settings.touch_capable) ? origEvent.changedTouches[0].pageY - origEvent.changedTouches[0].target.offsetTop : e.offsetY,
+								},
+								'time': new Date().getTime(),
+								'target': e.target
+							};
+							triggerCustomEvent(thisObject, 'singletap', e, touchData);
 						}
 					}, settings.doubletap_int);
 				}
@@ -260,7 +375,21 @@
 				
 				if(origTarget == e.target && started && ((new Date().getTime() - start_time) < settings.taphold_threshold) && (start_pos.x == end_x && start_pos.y == end_y))
 				{
-					triggerCustomEvent(thisObject, 'tap', e);
+					var origEvent = e.originalEvent;
+					var touchData = {
+						'position': {
+							'x': (settings.touch_capable) ? origEvent.changedTouches[0].screenX : e.screenX,
+							'y': (settings.touch_capable) ? origEvent.changedTouches[0].screenY : e.screenY,
+						},
+						'offset': {
+							'x': (settings.touch_capable) ? origEvent.changedTouches[0].pageX - origEvent.changedTouches[0].target.offsetLeft : e.offsetX,
+							'y': (settings.touch_capable) ? origEvent.changedTouches[0].pageY - origEvent.changedTouches[0].target.offsetTop : e.offsetY,
+						},
+						'time': new Date().getTime(),
+						'target': e.target
+					};
+					
+					triggerCustomEvent(thisObject, 'tap', e, touchData);
 				}
 			});
 		}
@@ -272,8 +401,10 @@
 			var thisObject = this,
 			    $this = $(thisObject),
 				started = false,
+			  hasSwiped =  false,
 				originalCoord = { x: 0, y: 0 },
-			    finalCoord    = { x: 0, y: 0 };
+			    finalCoord    = { x: 0, y: 0 },
+				startEvnt;
 	
 			// Screen touched, store the original coordinate
 			function touchStart(e)
@@ -283,6 +414,20 @@
 				finalCoord.x = originalCoord.x;
 				finalCoord.y = originalCoord.y;
 				started = true;
+				var origEvent = e.originalEvent;
+				// Read event data into our startEvt:
+				startEvnt = {
+					'position': {
+						'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
+						'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY,
+					},
+					'offset': {
+						'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
+						'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY,
+					},
+					'time': new Date().getTime(),
+					'target': e.target
+				};
 				
 				// For some reason, we need to add a 100ms pause in order to trigger swiping
 				// on Playbooks:
@@ -293,7 +438,6 @@
 			// Store coordinates as finger is swiping
 			function touchMove(e)
 			{
-				e.stopPropagation();
 				finalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
 				finalCoord.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
 				window.clearTimeout(settings.hold_timer);
@@ -318,13 +462,86 @@
 					finalCoord.x = 0;
 					finalCoord.y = 0;
 					started = false;
-					$this.trigger('swipe').trigger(swipedir);
+					
+					// Read event data into our endEvnt:
+					var origEvent = e.originalEvent;
+					endEvnt = {
+						'position': {
+							'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
+							'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY,
+						},
+						'offset': {
+							'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
+							'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY,
+						},
+						'time': new Date().getTime(),
+						'target': e.target
+					};
+					
+					// Calculate the swipe amount (normalized):
+					var xAmount = Math.abs(startEvnt.position.x - endEvnt.position.x),
+					    yAmount = Math.abs(startEvnt.position.y - endEvnt.position.y);
+					
+					var touchData = {
+						'startEvnt': startEvnt,
+						  'endEvnt': endEvnt,
+						'direction': swipedir.replace('swipe', ''),
+						  'xAmount': xAmount,
+						  'yAmount': yAmount,
+						 'duration': endEvnt.time - startEvnt.time 
+					}
+					hasSwiped = true;
+					$this.trigger('swipe', touchData).trigger(swipedir, touchData);
 				}
 			}
 			
-			function touchEnd(event)
+			function touchEnd(e)
 			{
+				if(hasSwiped)
+				{
+					// We need to check if the element to which the event was bound contains a data-xthreshold | data-vthreshold:
+					var ele_x_threshold = $this.attr('data-xthreshold'),
+						ele_y_threshold = $this.attr('data-ythreshold'),
+							h_threshold = (typeof ele_x_threshold !== 'undefined' && ele_x_threshold !== false && parseInt(ele_x_threshold)) ? parseInt(ele_x_threshold) : settings.swipe_h_threshold,
+							v_threshold = (typeof ele_y_threshold !== 'undefined' && ele_y_threshold !== false && parseInt(ele_y_threshold)) ? parseInt(ele_y_threshold) : settings.swipe_v_threshold;
+					
+					var origEvent = e.originalEvent;
+					endEvnt = {
+						'position': {
+							'x': (settings.touch_capable) ? origEvent.changedTouches[0].screenX : e.screenX,
+							'y': (settings.touch_capable) ? origEvent.changedTouches[0].screenY : e.screenY,
+						},
+						'offset': {
+							'x': (settings.touch_capable) ? origEvent.changedTouches[0].pageX - origEvent.changedTouches[0].target.offsetLeft : e.offsetX,
+							'y': (settings.touch_capable) ? origEvent.changedTouches[0].pageY - origEvent.changedTouches[0].target.offsetTop : e.offsetY,
+						},
+						'time': new Date().getTime(),
+						'target': e.target
+					};
+					
+					// Read event data into our endEvnt:
+					if(startEvnt.position.y > endEvnt.position.y && (startEvnt.position.y - endEvnt.position.y > v_threshold)) { swipedir = 'swipeup'; }
+					if(startEvnt.position.x < endEvnt.position.x && (endEvnt.position.x - startEvnt.position.x > h_threshold)) { swipedir = 'swiperight'; }
+					if(startEvnt.position.y < endEvnt.position.y && (endEvnt.position.y - startEvnt.position.y > v_threshold)) { swipedir = 'swipedown'; }
+					if(startEvnt.position.x > endEvnt.position.x && (startEvnt.position.x - endEvnt.position.x > h_threshold)) { swipedir = 'swipeleft'; }
+						
+					// Calculate the swipe amount (normalized):
+					var xAmount = Math.abs(startEvnt.position.x - endEvnt.position.x),
+						yAmount = Math.abs(startEvnt.position.y - endEvnt.position.y);
+					
+					var touchData = {
+						'startEvnt': startEvnt,
+						  'endEvnt': endEvnt,
+						'direction': swipedir.replace('swipe', ''),
+						  'xAmount': xAmount,
+						  'yAmount': yAmount,
+						 'duration': endEvnt.time - startEvnt.time 
+					}
+					$this.trigger('swipeend', touchData);
+				}
+				
 				started = false;
+				hasSwiped = false;
 			}
 			
 			$this.bind(settings.startevent, touchStart);
@@ -494,12 +711,11 @@
 		diff;
 	
 	// Trigger a custom event:
-	function triggerCustomEvent( obj, eventType, event ) {
-		
+	function triggerCustomEvent( obj, eventType, event, touchData ) {
 		var originalType = event.type;
 		event.type = eventType;
 		
-		$.event.dispatch.call( obj, event );
+		$.event.dispatch.call( obj, event, touchData );
 		event.type = originalType;
 	}
 	
@@ -509,8 +725,9 @@
 		swipeup: 'swipe',
 		swiperight: 'swipe',
 		swipedown: 'swipe',
-		swipeleft: 'swipe'
-	}, function(e, srcE) {
+		swipeleft: 'swipe',
+		swipeend: 'swipe',
+	}, function(e, srcE, touchData) {
 		$.event.special[e] =
 		{
 			setup: function() {
