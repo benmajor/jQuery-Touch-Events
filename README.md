@@ -57,7 +57,7 @@ Each event provides different callback data. The following shows the numerous da
 
 `target` - the jQuery object from which the event was triggered.
 
-`time` - JavaScript timestamp the event occured (milliseconds since the Unix Epoc)
+`time` - JavaScript timestamp the event occured (milliseconds since the Unix Epoch)
 
 ##`taphold`:
 
@@ -67,13 +67,13 @@ Each event provides different callback data. The following shows the numerous da
 
 `endPosition` - object containing the X and Y positions of the end event (i.e. when the user released their finger or mouse) relative to the screen. Accessed through `endPosition.x` and `endPosition.y` respectively.
 
-`endTime` - JavaScript timestamp the `taphold` was triggered (milliseconds since the Unix Epoc). This will ordinarily be equal to the `startTime` + `taphold` threshold.
+`endTime` - JavaScript timestamp the `taphold` was triggered (milliseconds since the Unix Epoch). This will ordinarily be equal to the `startTime` + `taphold` threshold.
 
 `startOffset` - object containing the X and Y positions of the start event (i.e. when the user pressed their finger or mouse) releative to the element to which the event was bound. Accessed through `endOffset.x` and `endOffset.y` respectively.
 
 `startPosition` - object containing the X and Y positions of the start event (i.e. when the user pressed their finger or mouse) relative to the screen. Accessed through `endPosition.x` and `endPosition.y` respectively.
 
-`startTime` - JavaScript timestamp the `taphold` started (milliseconds since the Unix Epoc). 
+`startTime` - JavaScript timestamp the `taphold` started (milliseconds since the Unix Epoch). 
 
 `target` - the jQuery object from which the event was triggered.
 
