@@ -30,12 +30,74 @@ Similar to ``swipe``, but triggered only when the user swipes their finger left 
 Similar to ``swipe``, but triggered only when the user swipes their finger top to bottom on the target element.
 + **swipeleft**  
 Similar to ``swipe``, but triggered only when the user swipes their finger from right to left.
++ **swipeend**  
+The ``swipeend`` event is trigged whenever a swipe event ends (i.e. the user finished moving their finger / cursor and released it). This event should be used to handle custom functions, since it will be triggered only when the swipe ends, rather than triggering immediately when the threshold has been met. 
 + **scrollstart**  
 Triggered as soon as scrolling begins on the target element.
 + **scrollend**  
 Triggered as soon as scrolling is stopped on the target element.
 + **orientationchange**  
 This event is triggered when the orientiation of the device is changed. Please note that it uses throttling for non-mobile devices, or devices which do not support the native ``orientationchange`` event. In the latter instance, a detection of the viewport size change occurs.
+
+Callback Data:
+--------------
+Each event now features a second argument that can be passed to the specified callback function. This argument includes some basic data relating specifically to the event, and can be accessed as a standard JavaScript object. To hook into this parameter, you should use the following code:
+
+`$(element).swipeend(function(e, touch) {  });`
+
+Given the example above, `touch` will now contain some basic data that can be accessed through `touch.`. The first argument will represent the last *native* event that occured (the names used for these two arguments is irrelevent).
+
+Each event provides different callback data. The following shows the numerous data that are passed back to the callback function inside the second parameter:
+
+##`tapstart`, `tapend`, `tap`, `singletap`:
+
+`offset` - object containing the X and Y positions of the event relative to the element to which is was bound. Accessed through `offset.x` and `offset.y` respectively.
+
+`position` - object containing the X and Y positions of the event relative to the screen. Accessed through `position.x` and `position.y` respectively.
+
+`target` - the jQuery object from which the event was triggered.
+
+`time` - JavaScript timestamp the event occured (milliseconds since the Unix Epoc)
+
+##`taphold`:
+
+`duration`: the time in milliseconds that the user tapped for.
+
+`endOffset` - object containing the X and Y positions of the end event (i.e. when the user released their finger or mouse) releative to the element to which the event was bound. Accessed through `endOffset.x` and `endOffset.y` respectively.
+
+`endPosition` - object containing the X and Y positions of the end event (i.e. when the user released their finger or mouse) relative to the screen. Accessed through `endPosition.x` and `endPosition.y` respectively.
+
+`endTime` - JavaScript timestamp the `taphold` was triggered (milliseconds since the Unix Epoc). This will ordinarily be equal to the `startTime` + `taphold` threshold.
+
+`startOffset` - object containing the X and Y positions of the start event (i.e. when the user pressed their finger or mouse) releative to the element to which the event was bound. Accessed through `endOffset.x` and `endOffset.y` respectively.
+
+`startPosition` - object containing the X and Y positions of the start event (i.e. when the user pressed their finger or mouse) relative to the screen. Accessed through `endPosition.x` and `endPosition.y` respectively.
+
+`startTime` - JavaScript timestamp the `taphold` started (milliseconds since the Unix Epoc). 
+
+`target` - the jQuery object from which the event was triggered.
+
+##`doubletap`:
+
+`firstTap` - Object containing the same data as a `tap` event, but for the first tap to occur.
+
+`lastTap` - Object containing the same data as a `tap` event, but for the second (i.e. final) tap to occur.
+
+`interval` - the time in milliseconds between the two tap.
+
+##`swipe`, `swipeup`, `swiperight`, `swipedown`, `swipeleft`, `swipeend`:
+
+`direction` - string representing the swipe direction (either `up`, `right`, `down` or `left`).
+
+`duration` - the time in milliseconds over which the swipe took place (for best results, use with `swipeend` only, as this will typically be equal to the defined `swipe-threshold`.
+
+`xAmount` - number of pixels the swipe occupied on the X-axis (returned regardless of direction).
+
+`yAmount` - number of pixels the swipe occupied on the Y-axis (returned regardless of direction).
+
+`startEvent` - Object containing the same data as a `tap` event, but captured when swiping begins.
+
+`endEvent` - Object containing the same data as a `tap` event, but captured when swiping is complete.
 
 Demo:
 -----
@@ -98,3 +160,5 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Window size: x 
+Viewport size: x
