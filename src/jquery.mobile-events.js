@@ -25,7 +25,9 @@
  * 
  */
 
-(function ($) {
+(function ($, undefined) {
+	'use strict';
+
 	$.attrFn = $.attrFn || {};
 
 	// navigator.userAgent.toLowerCase() isn't reliable for Chrome installs
@@ -132,7 +134,6 @@
 			var thisObject = this,
 				$this = $(thisObject),
 				origTarget,
-				timer,
 				start_pos = {
 					x: 0,
 					y: 0
@@ -164,7 +165,7 @@
 						var end_x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX,
 							end_y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
 
-						if (e.target == origTarget && (start_pos.x == end_x && start_pos.y == end_y)) {
+						if (e.target === origTarget && (start_pos.x === end_x && start_pos.y === end_y)) {
 							$this.data('tapheld', true);
 
 							var end_time = new Date().getTime(),
@@ -175,8 +176,8 @@
 								endOffset = {
 									'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
 									'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
-								};
-							duration = end_time - start_time;
+								},
+								duration = end_time - start_time;
 
 							// Build the touch data:
 							var touchData = {
@@ -188,7 +189,7 @@
 								'endOffset': endOffset,
 								'duration': duration,
 								'target': e.target
-							}
+							};
 
 							triggerCustomEvent(thisObject, 'taphold', e, touchData);
 						}
@@ -208,9 +209,9 @@
 		setup: function () {
 			var thisObject = this,
 				$this = $(thisObject),
-				origTarget,
-				action,
-				firstTap;
+				origTarget = null,
+				action = null,
+				firstTap = null;
 
 			$this.bind(settings.startevent, function (e) {
 				if (e.which && e.which !== 1) {
@@ -240,10 +241,11 @@
 				var delta = now - lastTouch;
 				window.clearTimeout(action);
 
-				if (delta < settings.doubletap_int && delta > 0 && (e.target == origTarget) && delta > 100) {
+				if (delta < settings.doubletap_int && delta > 0 && (e.target === origTarget) && delta > 100) {
 					$this.data('doubletapped', true);
 					window.clearTimeout(settings.tap_timer);
 
+					var origEvent = e.originalEvent;
 					// Now get the current event:
 					var lastTap = {
 						'position': {
@@ -256,7 +258,7 @@
 						},
 						'time': new Date().getTime(),
 						'target': e.target
-					}
+					};
 
 					var touchData = {
 						'firstTap': firstTap,
@@ -283,7 +285,6 @@
 			var thisObject = this,
 				$this = $(thisObject),
 				origTarget = null,
-				startTime = null,
 				start_pos = {
 					x: 0,
 					y: 0
@@ -293,7 +294,6 @@
 				if (e.which && e.which !== 1) {
 					return false;
 				} else {
-					startTime = new Date().getTime();
 					origTarget = e.target;
 
 					// Get the start x and y position:
@@ -303,13 +303,13 @@
 				}
 			}).bind(settings.endevent, function (e) {
 
-				if (e.target == origTarget) {
+				if (e.target === origTarget) {
 					// Get the end point:
-					end_pos_x = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX;
-					end_pos_y = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY;
+					var end_pos_x = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX;
+					var end_pos_y = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY;
 
 					settings.tap_timer = window.setTimeout(function () {
-						if (!$this.data('doubletapped') && !$this.data('tapheld') && (start_pos.x == end_pos_x) && (start_pos.y == end_pos_y)) {
+						if (!$this.data('doubletapped') && !$this.data('tapheld') && (start_pos.x === end_pos_x) && (start_pos.y === end_pos_y)) {
 							var origEvent = e.originalEvent;
 							var touchData = {
 								'position': {
@@ -338,7 +338,7 @@
 				$this = $(thisObject),
 				started = false,
 				origTarget = null,
-				start_time,
+				start_time = null,
 				start_pos = {
 					x: 0,
 					y: 0
@@ -360,7 +360,7 @@
 				var end_x = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX,
 					end_y = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY;
 
-				if (origTarget == e.target && started && ((new Date().getTime() - start_time) < settings.taphold_threshold) && (start_pos.x == end_x && start_pos.y == end_y)) {
+				if (origTarget === e.target && started && ((new Date().getTime() - start_time) < settings.taphold_threshold) && (start_pos.x === end_x && start_pos.y === end_y)) {
 					var origEvent = e.originalEvent;
 					var touchData = {
 						'position': {
@@ -396,7 +396,7 @@
 					x: 0,
 					y: 0
 				},
-				startEvnt;
+				startEvnt = null;
 
 			// Screen touched, store the original coordinate
 
@@ -434,13 +434,13 @@
 				finalCoord.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
 				window.clearTimeout(settings.hold_timer);
 
-				var swipedir;
+				var swipedir = null;
 
 				// We need to check if the element to which the event was bound contains a data-xthreshold | data-vthreshold:
 				var ele_x_threshold = $this.attr('data-xthreshold'),
 					ele_y_threshold = $this.attr('data-ythreshold'),
-					h_threshold = (typeof ele_x_threshold !== 'undefined' && ele_x_threshold !== false && parseInt(ele_x_threshold)) ? parseInt(ele_x_threshold) : settings.swipe_h_threshold,
-					v_threshold = (typeof ele_y_threshold !== 'undefined' && ele_y_threshold !== false && parseInt(ele_y_threshold)) ? parseInt(ele_y_threshold) : settings.swipe_v_threshold;
+					h_threshold = (typeof ele_x_threshold !== 'undefined' && ele_x_threshold !== false && parseInt(ele_x_threshold, 10)) ? parseInt(ele_x_threshold, 10) : settings.swipe_h_threshold,
+					v_threshold = (typeof ele_y_threshold !== 'undefined' && ele_y_threshold !== false && parseInt(ele_y_threshold, 10)) ? parseInt(ele_y_threshold, 10) : settings.swipe_v_threshold;
 
 
 				if (originalCoord.y > finalCoord.y && (originalCoord.y - finalCoord.y > v_threshold)) {
@@ -455,7 +455,7 @@
 				if (originalCoord.x > finalCoord.x && (originalCoord.x - finalCoord.x > h_threshold)) {
 					swipedir = 'swipeleft';
 				}
-				if (swipedir != undefined && started) {
+				if (swipedir !== undefined && started) {
 					originalCoord.x = 0;
 					originalCoord.y = 0;
 					finalCoord.x = 0;
@@ -464,7 +464,7 @@
 
 					// Read event data into our endEvnt:
 					var origEvent = e.originalEvent;
-					endEvnt = {
+					var endEvnt = {
 						'position': {
 							'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
 							'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY,
@@ -488,7 +488,7 @@
 						'xAmount': xAmount,
 						'yAmount': yAmount,
 						'duration': endEvnt.time - startEvnt.time
-					}
+					};
 					hasSwiped = true;
 					$this.trigger('swipe', touchData).trigger(swipedir, touchData);
 				}
@@ -499,11 +499,11 @@
 					// We need to check if the element to which the event was bound contains a data-xthreshold | data-vthreshold:
 					var ele_x_threshold = $this.attr('data-xthreshold'),
 						ele_y_threshold = $this.attr('data-ythreshold'),
-						h_threshold = (typeof ele_x_threshold !== 'undefined' && ele_x_threshold !== false && parseInt(ele_x_threshold)) ? parseInt(ele_x_threshold) : settings.swipe_h_threshold,
-						v_threshold = (typeof ele_y_threshold !== 'undefined' && ele_y_threshold !== false && parseInt(ele_y_threshold)) ? parseInt(ele_y_threshold) : settings.swipe_v_threshold;
+						h_threshold = (typeof ele_x_threshold !== 'undefined' && ele_x_threshold !== false && parseInt(ele_x_threshold, 10)) ? parseInt(ele_x_threshold, 10) : settings.swipe_h_threshold,
+						v_threshold = (typeof ele_y_threshold !== 'undefined' && ele_y_threshold !== false && parseInt(ele_y_threshold, 10)) ? parseInt(ele_y_threshold, 10) : settings.swipe_v_threshold;
 
 					var origEvent = e.originalEvent;
-					endEvnt = {
+					var endEvnt = {
 						'position': {
 							'x': (settings.touch_capable) ? origEvent.changedTouches[0].screenX : e.screenX,
 							'y': (settings.touch_capable) ? origEvent.changedTouches[0].screenY : e.screenY,
@@ -517,6 +517,7 @@
 					};
 
 					// Read event data into our endEvnt:
+					var swipedir = null;
 					if (startEvnt.position.y > endEvnt.position.y && (startEvnt.position.y - endEvnt.position.y > v_threshold)) {
 						swipedir = 'swipeup';
 					}
@@ -541,7 +542,7 @@
 						'xAmount': xAmount,
 						'yAmount': yAmount,
 						'duration': endEvnt.time - startEvnt.time
-					}
+					};
 					$this.trigger('swipeend', touchData);
 				}
 
@@ -560,8 +561,8 @@
 		setup: function () {
 			var thisObject = this,
 				$this = $(thisObject),
-				scrolling,
-				timer;
+				scrolling = null,
+				timer = null;
 
 			function trigger(event, state) {
 				scrolling = state;
@@ -584,9 +585,8 @@
 
 	// This is the orientation change (largely borrowed from jQuery Mobile):
 	var win = $(window),
-		special_event,
 		get_orientation,
-		last_orientation,
+		last_orientation = null,
 		initial_orientation_is_landscape,
 		initial_orientation_is_default,
 		portrait_map = {
@@ -610,7 +610,7 @@
 		}
 	}
 
-	$.event.special.orientationchange = special_event = {
+	$.event.special.orientationchange = {
 		setup: function () {
 			// If the event is supported natively, return false so that jQuery
 			// will bind to the event using DOM methods.
@@ -670,17 +670,11 @@
 		return isPortrait ? 'portrait' : 'landscape';
 	};
 
-	// throttle Handler:
-	$.event.special.throttledresize = {
-		setup: function () {
-			$(this).bind('resize', throttle_handler);
-		},
-		teardown: function () {
-			$(this).unbind('resize', throttle_handler);
-		}
-	};
-
 	var throttle = 250,
+		lastCall = 0,
+		heldCall = null,
+		curr,
+		diff,
 		throttle_handler = function () {
 			curr = (new Date()).getTime();
 			diff = curr - lastCall;
@@ -697,11 +691,17 @@
 				// Promise a held call will still execute
 				heldCall = window.setTimeout(handler, throttle - diff);
 			}
+		};
+
+	// throttle Handler:
+	$.event.special.throttledresize = {
+		setup: function () {
+			$(this).bind('resize', throttle_handler);
 		},
-		lastCall = 0,
-		heldCall,
-		curr,
-		diff;
+		teardown: function () {
+			$(this).unbind('resize', throttle_handler);
+		}
+	};
 
 	// Trigger a custom event:
 
