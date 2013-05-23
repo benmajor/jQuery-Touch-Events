@@ -468,8 +468,8 @@
                 var swipedir;
 
                 // We need to check if the element to which the event was bound contains a data-xthreshold | data-vthreshold:
-                var ele_x_threshold = $this.attr('data-xthreshold'),
-                    ele_y_threshold = $this.attr('data-ythreshold'),
+                var ele_x_threshold = $this.data('xthreshold'),
+                    ele_y_threshold = $this.data('ythreshold'),
                     h_threshold = (typeof ele_x_threshold !== 'undefined' && ele_x_threshold !== false && parseInt(ele_x_threshold)) ? parseInt(ele_x_threshold) : settings.swipe_h_threshold,
                     v_threshold = (typeof ele_y_threshold !== 'undefined' && ele_y_threshold !== false && parseInt(ele_y_threshold)) ? parseInt(ele_y_threshold) : settings.swipe_v_threshold;
 
@@ -528,8 +528,8 @@
                 $this.data('callee3', arguments.callee);
                 if (hasSwiped) {
                     // We need to check if the element to which the event was bound contains a data-xthreshold | data-vthreshold:
-                    var ele_x_threshold = $this.attr('data-xthreshold'),
-                        ele_y_threshold = $this.attr('data-ythreshold'),
+                    var ele_x_threshold = $this.data('xthreshold'),
+                        ele_y_threshold = $this.data('ythreshold'),
                         h_threshold = (typeof ele_x_threshold !== 'undefined' && ele_x_threshold !== false && parseInt(ele_x_threshold)) ? parseInt(ele_x_threshold) : settings.swipe_h_threshold,
                         v_threshold = (typeof ele_y_threshold !== 'undefined' && ele_y_threshold !== false && parseInt(ele_y_threshold)) ? parseInt(ele_y_threshold) : settings.swipe_v_threshold;
 
