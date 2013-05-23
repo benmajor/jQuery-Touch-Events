@@ -220,7 +220,8 @@
                 $this = $(thisObject),
                 origTarget,
                 action,
-                firstTap;
+                firstTap,
+                origEvent;
 
             $this.bind(settings.startevent, function (e) {
                 if (e.which && e.which !== 1) {
@@ -230,7 +231,7 @@
                     origTarget = e.target;
                     $this.data('callee1', arguments.callee);
 
-                    var origEvent = e.originalEvent;
+                    origEvent = e.originalEvent;
                     firstTap = {
                         'position': {
                             'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
