@@ -81,7 +81,7 @@ Each event provides different callback data. The following shows the numerous da
 
 `firstTap` - Object containing the same data as a `tap` event, but for the first tap to occur.
 
-`lastTap` - Object containing the same data as a `tap` event, but for the second (i.e. final) tap to occur.
+`secondTap` - Object containing the same data as a `tap` event, but for the second (i.e. final) tap to occur.
 
 `interval` - the time in milliseconds between the two tap.
 
