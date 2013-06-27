@@ -11,17 +11,17 @@ In addition to the numerous additional events that are provided, the library als
 
 The following utility functions are provided (each function is registered to the jQuery namespace, and should be called with `$.funcName()` (or `jQuery.funcName()` for compatibility):
 
-+ **`isTouchCapable()`:**  
++ `isTouchCapable()`:  
 Returns `true` or `false` depending upon whether touch events are supported.
-+ **`getStartEvent()`:**  
++ `getStartEvent()`:   
 Returns `touchstart` for touch-enabled devices, or `mousedown` for standard environments.
-+ **`getEndEvent()`:**  
++ `getEndEvent()`:  
 Returns `touchend` for touch-enabled devices, or `mouseup` for standard environments.
-+ **`getMoveEvent()`:**  
++ `getMoveEvent()`:  
 Returns `touchmove` for touch-enabled devices, or `mousemove` for standard environments.
-+ **`getTapEvent()`:**  
++ `getTapEvent()`:  
 Returns `tap` for touch-enabled devices, or `click` for standard environments.
-+ **`getScrollEvent()`:**  
++ `getScrollEvent()`:  
 Returns `touchmove` for touch-enabled devices, or `scroll` for standard environments. **Caution should be exercised when using this function, since some mobile browsers will correctly bind to `scroll` as well as `touchmove`.**
 
 Events Provided:
