@@ -23,8 +23,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  * 
- */ (function ($) {
-
+ */
+(function ($) {
     $.attrFn = $.attrFn || {};
 
     // navigator.userAgent.toLowerCase() isn't reliable for Chrome installs
@@ -41,14 +41,14 @@
             taphold_threshold: 750,
             doubletap_int: 500,
 
-            touch_capable: (document.documentElement.hasOwnProperty('ontouchstart') && !isChromeDesktop),
-            orientation_support: (window.hasOwnProperty('orientation') && window.hasOwnProperty('onorientationchange')),
+            touch_capable: ('ontouchstart' in document.documentElement && !isChromeDesktop),
+            orientation_support: ('orientation' in window && 'onorientationchange' in window),
 
-            startevent: (document.documentElement.hasOwnProperty('ontouchstart') && !isChromeDesktop) ? 'touchstart' : 'mousedown',
-            endevent: (document.documentElement.hasOwnProperty('ontouchstart') && !isChromeDesktop) ? 'touchend' : 'mouseup',
-            moveevent: (document.documentElement.hasOwnProperty('ontouchstart') && !isChromeDesktop) ? 'touchmove' : 'mousemove',
-            tapevent: (document.documentElement.hasOwnProperty('ontouchstart') && !isChromeDesktop) ? 'tap' : 'click',
-            scrollevent: (document.documentElement.hasOwnProperty('ontouchstart') && !isChromeDesktop) ? 'touchmove' : 'scroll',
+            startevent: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'touchstart' : 'mousedown',
+            endevent: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'touchend' : 'mouseup',
+            moveevent: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'touchmove' : 'mousemove',
+            tapevent: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'tap' : 'click',
+            scrollevent: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'touchmove' : 'scroll',
 
             hold_timer: null,
             tap_timer: null
