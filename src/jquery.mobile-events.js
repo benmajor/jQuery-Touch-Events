@@ -534,6 +534,7 @@
             }
 
             function touchEnd(e) {
+                var swipedir = "";
                 $this.data('callee3', arguments.callee);
                 if (hasSwiped) {
                     // We need to check if the element to which the event was bound contains a data-xthreshold | data-vthreshold:
