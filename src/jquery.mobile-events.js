@@ -439,6 +439,7 @@
             // Screen touched, store the original coordinate
 
             function touchStart(e) {
+                $this = $(e.target);
                 $this.data('callee1', arguments.callee);
                 originalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                 originalCoord.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
@@ -469,6 +470,7 @@
             // Store coordinates as finger is swiping
 
             function touchMove(e) {
+                $this = $(e.target);
                 $this.data('callee2', arguments.callee);
                 finalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                 finalCoord.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
@@ -534,6 +536,7 @@
             }
 
             function touchEnd(e) {
+                $this = $(e.target);
                 var swipedir = "";
                 $this.data('callee3', arguments.callee);
                 if (hasSwiped) {
