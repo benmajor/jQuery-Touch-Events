@@ -333,6 +333,8 @@
                     // Get the end point:
                     end_pos_x = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX;
                     end_pos_y = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY;
+                    
+                    // We need to check if it was a taphold:
 
                     settings.tap_timer = window.setTimeout(function () {
                         if (!$this.data('doubletapped') && !$this.data('tapheld') && (start_pos.x == end_pos_x) && (start_pos.y == end_pos_y)) {
@@ -349,7 +351,12 @@
                                 'time': new Date().getTime(),
                                 'target': e.target
                             };
-                            triggerCustomEvent(thisObject, 'singletap', e, touchData);
+                            
+                            // Was it a taphold?
+                            if((touchData.time - startTime) < settings.taphold_threshold)
+                            {
+                                triggerCustomEvent(thisObject, 'singletap', e, touchData);
+                            }
                         }
                     }, settings.doubletap_int);
                 }
