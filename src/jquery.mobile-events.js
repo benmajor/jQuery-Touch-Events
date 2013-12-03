@@ -36,6 +36,7 @@
         isChromeDesktop = ((agent.indexOf('chrome') > -1) && ((agent.indexOf('windows') > -1) || (agent.indexOf('macintosh') > -1) || (agent.indexOf('linux') > -1)) && agent.indexOf('chrome') < 0),
 
         settings = {
+			tap_pixel_range: 5,
             swipe_h_threshold: 50,
             swipe_v_threshold: 50,
             taphold_threshold: 750,
@@ -399,9 +400,11 @@
 
                 // Only trigger if they've started, and the target matches:
                 var end_x = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX,
-                    end_y = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY;
-
-                if (origTarget == e.target && started && ((new Date().getTime() - start_time) < settings.taphold_threshold) && (start_pos.x == end_x && start_pos.y == end_y)) {
+					end_y = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY;
+					diff_x = (start_pos.x - end_x),
+					diff_y = (start_pos.y - end_y);
+					
+					if (origTarget == e.target && started && ((new Date().getTime() - start_time) < settings.taphold_threshold) && ((start_pos.x == end_x && start_pos.y == end_y) || (diff_x >= -(settings.tap_pixel_range) && diff_x <= settings.tap_pixel_range && diff_y >= -(settings.tap_pixel_range) && diff_y <= settings.tap_pixel_range))) {
                     var origEvent = e.originalEvent;
                     var touchData = {
                         'position': {
