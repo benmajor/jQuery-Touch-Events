@@ -31,6 +31,8 @@ Events Provided:
 Fired as soon as the user begins touching an element (or clicking, for desktop environments).
 + **`tapend`**  
 Fired after the user releases their finger from the target element (or releases their mouse button on desktops).
++ **`tapmove`**
+Fired as soon as the user begins moving their finger on an element (or moving their mouse, for desktop environments).
 + **`tap`**  
 This event is fired whenever the user taps and releases their finger on the target element. Caution should be observed when using this event in conjunction without tap events, especially ``doubletap``. This event will be fired twice when ``doubletap`` is used, so it is recommended to use ``singletap`` in this case.
 + **`singletap`**  
@@ -68,7 +70,7 @@ Given the example above, `touch` will now contain some basic data that can be ac
 
 Each event provides different callback data. The following shows the numerous data that are passed back to the callback function inside the second parameter:
 
-##`tapstart`, `tapend`, `tap`, `singletap`:
+##`tapstart`, `tapend`, `tapmove`, `tap`, `singletap`:
 
 `offset` - object containing the X and Y positions of the event relative to the element to which is was bound. Accessed through `offset.x` and `offset.y` respectively.
 
