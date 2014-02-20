@@ -31,7 +31,7 @@ Events Provided:
 Fired as soon as the user begins touching an element (or clicking, for desktop environments).
 + **`tapend`**  
 Fired after the user releases their finger from the target element (or releases their mouse button on desktops).
-+ **`tapmove`**
++ **`tapmove`**  
 Fired as soon as the user begins moving their finger on an element (or moving their mouse, for desktop environments).
 + **`tap`**  
 This event is fired whenever the user taps and releases their finger on the target element. Caution should be observed when using this event in conjunction without tap events, especially ``doubletap``. This event will be fired twice when ``doubletap`` is used, so it is recommended to use ``singletap`` in this case.
