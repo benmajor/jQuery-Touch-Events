@@ -106,9 +106,41 @@
         },
 
         remove: function () {
-            $(this).off(settings.startevent, $(this).data.callee)
+            $(this).off(settings.startevent, $(this).data.callee);
         }
     };
+	
+	// tapmove Event:
+	$.event.special.tapmove = {
+		setup: function() {
+			var thisObject = this,
+				$this = $(thisObject);
+				
+			$this.on(settings.moveevent, function(e) {
+				$this.data('callee', arguments.callee);
+				
+				var origEvent = e.originalEvent,
+					touchData = {
+                        'position': {
+                            'x': ((settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX),
+                            'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY,
+                        },
+                        'offset': {
+                            'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
+                            'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY,
+                        },
+                        'time': new Date().getTime(),
+                        'target': e.target
+                    };
+					
+				triggerCustomEvent(thisObject, 'tapmove', e, touchData);
+				return true;
+			});
+		},
+		remove: function() {
+			$(this).off(settings.moveevent, $(this).data.callee);
+		}
+	}
 
     // tapend Event:
     $.event.special.tapend = {
@@ -138,7 +170,7 @@
             });
         },
         remove: function () {
-            $(this).off(settings.endevent, $(this).data.callee)
+            $(this).off(settings.endevent, $(this).data.callee);
         }
     };
 
