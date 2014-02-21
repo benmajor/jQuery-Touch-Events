@@ -54,8 +54,6 @@
             hold_timer: null,
             tap_timer: null
         };
-		
-	alert(isChromeDesktop);
     
     // Convenience functions:
     $.isTouchCapable = function() { return settings.touch_capable; };
