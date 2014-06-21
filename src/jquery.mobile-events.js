@@ -302,12 +302,12 @@
                     // Now get the current event:
                     var lastTap = {
                         'position': {
-                            'x': (settings.touch_capable) ? e.originalEvent.touches[0].screenX : e.screenX,
-                            'y': (settings.touch_capable) ? e.originalEvent.touches[0].screenY : e.screenY
+                            'x': (settings.touch_capable) ? e.originalEvent.changedTouches[0].screenX : e.screenX,
+                            'y': (settings.touch_capable) ? e.originalEvent.changedTouches[0].screenY : e.screenY
                         },
                         'offset': {
-                            'x': (settings.touch_capable) ? e.originalEvent.touches[0].pageX - e.originalEvent.touches[0].target.offsetLeft : e.offsetX,
-                            'y': (settings.touch_capable) ? e.originalEvent.touches[0].pageY - e.originalEvent.touches[0].target.offsetTop : e.offsetY
+                            'x': (settings.touch_capable) ? e.originalEvent.changedTouches[0].pageX - e.originalEvent.changedTouches[0].target.offsetLeft : e.offsetX,
+                            'y': (settings.touch_capable) ? e.originalEvent.changedTouches[0].pageY - e.originalEvent.changedTouches[0].target.offsetTop : e.offsetY
                         },
                         'time': new Date().getTime(),
                         'target': e.target
