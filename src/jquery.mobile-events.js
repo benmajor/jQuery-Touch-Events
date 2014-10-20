@@ -267,7 +267,7 @@
             $this.on(settings.startevent, function (e) {
                 if (e.which && e.which !== 1) {
                     return false;
-                } else if(!$this.data('lastTouch')) {
+                } //else if(!$this.data('lastTouch')) {
                     $this.data('doubletapped', false);
                     origTarget = e.target;
                     $this.data('callee1', arguments.callee);
@@ -287,7 +287,7 @@
                     };
 
                     return true;
-                }
+                //}
             }).on(settings.endevent, function (e) {
                 var now = new Date().getTime();
                 var lastTouch = $this.data('lastTouch') || now + 1;
@@ -295,7 +295,7 @@
                 window.clearTimeout(action);
                 $this.data('callee2', arguments.callee);
 
-                if (delta < settings.doubletap_int && delta > 0 && (e.target == origTarget) && delta > 100) {
+                if (delta < settings.doubletap_int && (e.target == origTarget) && delta > 100) {
                     $this.data('doubletapped', true);
                     window.clearTimeout(settings.tap_timer);
 
