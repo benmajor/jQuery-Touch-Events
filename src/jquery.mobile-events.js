@@ -262,33 +262,35 @@
                 origTarget,
                 action,
                 firstTap,
-                origEvent;
+                origEvent,
+				cooloff,
+				cooling = false;
 
             $this.on(settings.startevent, function (e) {
                 if (e.which && e.which !== 1) {
                     return false;
-                } //else if(!$this.data('lastTouch')) {
-                    $this.data('doubletapped', false);
-                    origTarget = e.target;
-                    $this.data('callee1', arguments.callee);
+                } 
+				$this.data('doubletapped', false);
+				origTarget = e.target;
+				$this.data('callee1', arguments.callee);
 
-                    origEvent = e.originalEvent;
-                    firstTap = {
-                        'position': {
-                            'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
-                            'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
-                        },
-                        'offset': {
-                            'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
-                            'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
-                        },
-                        'time': new Date().getTime(),
-                        'target': e.target
-                    };
+				origEvent = e.originalEvent;
+				firstTap = {
+					'position': {
+						'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
+						'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
+					},
+					'offset': {
+						'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
+						'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
+					},
+					'time': new Date().getTime(),
+					'target': e.target
+				};
 
-                    return true;
-                //}
+				return true;
             }).on(settings.endevent, function (e) {
+				
                 var now = new Date().getTime();
                 var lastTouch = $this.data('lastTouch') || now + 1;
                 var delta = now - lastTouch;
@@ -319,7 +321,16 @@
                         'interval': lastTap.time - firstTap.time
                     };
 
-                    triggerCustomEvent(thisObject, 'doubletap', e, touchData);
+					if (!cooling) {
+						triggerCustomEvent(thisObject, 'doubletap', e, touchData);
+					}
+					
+					cooling = true;
+					
+					cooloff = window.setTimeout(function (e) {
+						cooling = false;
+					}, settings.doubletap_int);
+					
                 } else {
                     $this.data('lastTouch', now);
                     action = window.setTimeout(function (e) {
