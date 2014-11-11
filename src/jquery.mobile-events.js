@@ -42,14 +42,14 @@
             taphold_threshold: 750,
             doubletap_int: 500,
 
-            touch_capable: ('ontouchstart' in document.documentElement && !isChromeDesktop),
+            touch_capable: ('ontouchstart' in window && !isChromeDesktop),
             orientation_support: ('orientation' in window && 'onorientationchange' in window),
 
-            startevent: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'touchstart' : 'mousedown',
-            endevent: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'touchend' : 'mouseup',
-            moveevent: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'touchmove' : 'mousemove',
-            tapevent: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'tap' : 'click',
-            scrollevent: ('ontouchstart' in document.documentElement && !isChromeDesktop) ? 'touchmove' : 'scroll',
+            startevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchstart' : 'mousedown',
+            endevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchend' : 'mouseup',
+            moveevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'mousemove',
+            tapevent: ('ontouchstart' in window && !isChromeDesktop) ? 'tap' : 'click',
+            scrollevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'scroll',
 
             hold_timer: null,
             tap_timer: null
@@ -64,7 +64,7 @@
     $.getScrollEvent = function() { return settings.scrollevent; };
     
     // Add Event shortcuts:
-    $.each(['tapstart', 'tapend', 'tap', 'singletap', 'doubletap', 'taphold', 'swipe', 'swipeup', 'swiperight', 'swipedown', 'swipeleft', 'swipeend', 'scrollstart', 'scrollend', 'orientationchange'], function (i, name) {
+    $.each(['tapstart', 'tapend', 'tapmove', 'tap', 'tap2', 'tap3', 'tap4', 'singletap', 'doubletap', 'taphold', 'swipe', 'swipeup', 'swiperight', 'swipedown', 'swipeleft', 'swipeend', 'scrollstart', 'scrollend', 'orientationchange'], function (i, name) {
         $.fn[name] = function (fn) {
             return fn ? this.on(name, fn) : this.trigger(name);
         };
@@ -423,7 +423,8 @@
                 start_pos = {
                     x: 0,
                     y: 0
-                };
+                },
+				touches;
 
             $this.on(settings.startevent, function (e) {
                 $this.data('callee1', arguments.callee);
@@ -436,6 +437,8 @@
                     start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
                     start_time = new Date().getTime();
                     origTarget = e.target;
+					
+					touches = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches : [ e ];
                     return true;
                 }
             }).on(settings.endevent, function (e) {
@@ -443,26 +446,55 @@
 
                 // Only trigger if they've started, and the target matches:
                 var end_x = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX,
-					end_y = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY;
+					end_y = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY,
 					diff_x = (start_pos.x - end_x),
-					diff_y = (start_pos.y - end_y);
+					diff_y = (start_pos.y - end_y),
+					eventName;
 					
 					if (origTarget == e.target && started && ((new Date().getTime() - start_time) < settings.taphold_threshold) && ((start_pos.x == end_x && start_pos.y == end_y) || (diff_x >= -(settings.tap_pixel_range) && diff_x <= settings.tap_pixel_range && diff_y >= -(settings.tap_pixel_range) && diff_y <= settings.tap_pixel_range))) {
                     var origEvent = e.originalEvent;
-                    var touchData = {
-                        'position': {
-                            'x': (settings.touch_capable) ? origEvent.changedTouches[0].screenX : e.screenX,
-                            'y': (settings.touch_capable) ? origEvent.changedTouches[0].screenY : e.screenY,
-                        },
-                        'offset': {
-                            'x': (settings.touch_capable) ? origEvent.changedTouches[0].pageX - origEvent.changedTouches[0].target.offsetLeft : e.offsetX,
-                            'y': (settings.touch_capable) ? origEvent.changedTouches[0].pageY - origEvent.changedTouches[0].target.offsetTop : e.offsetY,
-                        },
-                        'time': new Date().getTime(),
-                        'target': e.target
-                    };
-
-                    triggerCustomEvent(thisObject, 'tap', e, touchData);
+                    var touchData = [ ];
+					
+					for( var i = 0; i < touches.length; i++)
+					{
+						var touch = {
+							'position': {
+								'x': (settings.touch_capable) ? origEvent.changedTouches[i].screenX : e.screenX,
+								'y': (settings.touch_capable) ? origEvent.changedTouches[i].screenY : e.screenY,
+							},
+							'offset': {
+								'x': (settings.touch_capable) ? origEvent.changedTouches[i].pageX - origEvent.changedTouches[i].target.offsetLeft : e.offsetX,
+								'y': (settings.touch_capable) ? origEvent.changedTouches[i].pageY - origEvent.changedTouches[i].target.offsetTop : e.offsetY,
+							},
+							'time': new Date().getTime(),
+							'target': e.target
+						};
+						
+						touchData.push( touch );
+					}
+					
+					console.log(touches);
+					
+					switch( touches.length )
+					{
+						case 1:
+							eventName = 'tap';
+							break;
+						
+						case 2:
+							eventName = 'tap2';
+							break;
+						
+						case 3:
+							eventName = 'tap3';
+							break;
+						
+						case 4:
+							eventName = 'tap4';
+							break;
+					}
+					
+                    triggerCustomEvent(thisObject, eventName, e, touchData);
                 }
             });
         },
@@ -828,6 +860,7 @@
         swipedown: 'swipe',
         swipeleft: 'swipe',
         swipeend: 'swipe',
+		tap2: 'tap'
     }, function (e, srcE, touchData) {
         $.event.special[e] = {
             setup: function () {
