@@ -182,7 +182,9 @@
                 start_pos = {
                     x: 0,
                     y: 0
-                };
+                },
+				end_x = 0,
+                end_y = 0;
 
             $this.on(settings.startevent, function (e) {
                 if (e.which && e.which !== 1) {
@@ -205,12 +207,15 @@
                     start_pos.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                     start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
 
+					end_x = start_pos.x;
+					end_y = start_pos.y;
+
                     settings.hold_timer = window.setTimeout(function () {
 
-                        var end_x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX,
-                            end_y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
+                        var diff_x = (start_pos.x - end_x),
+							diff_y = (start_pos.y - end_y);
 
-                        if (e.target == origTarget && (start_pos.x == end_x && start_pos.y == end_y)) {
+                        if (e.target == origTarget && ((start_pos.x == end_x && start_pos.y == end_y) || (diff_x >= -(settings.tap_pixel_range) && diff_x <= settings.tap_pixel_range && diff_y >= -(settings.tap_pixel_range) && diff_y <= settings.tap_pixel_range))) {
                             $this.data('tapheld', true);
 
                             var end_time = new Date().getTime(),
@@ -246,11 +251,17 @@
                 $this.data('callee2', arguments.callee);
                 $this.data('tapheld', false);
                 window.clearTimeout(settings.hold_timer);
+            })
+			.on(settings.moveevent, function (e) {
+				$this.data('callee3', arguments.callee);
+				
+				end_x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
+                end_y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
             });
         },
 
         remove: function () {
-            $(this).off(settings.startevent, $(this).data.callee1).off(settings.endevent, $(this).data.callee2);
+            $(this).off(settings.startevent, $(this).data.callee1).off(settings.endevent, $(this).data.callee2).off(settings.moveevent, $(this).data.callee3);
         }
     };
 
@@ -451,7 +462,7 @@
 					diff_y = (start_pos.y - end_y),
 					eventName;
 					
-					if (origTarget == e.target && started && ((new Date().getTime() - start_time) < settings.taphold_threshold) && ((start_pos.x == end_x && start_pos.y == end_y) || (diff_x >= -(settings.tap_pixel_range) && diff_x <= settings.tap_pixel_range && diff_y >= -(settings.tap_pixel_range) && diff_y <= settings.tap_pixel_range))) {
+				if (origTarget == e.target && started && ((new Date().getTime() - start_time) < settings.taphold_threshold) && ((start_pos.x == end_x && start_pos.y == end_y) || (diff_x >= -(settings.tap_pixel_range) && diff_x <= settings.tap_pixel_range && diff_y >= -(settings.tap_pixel_range) && diff_y <= settings.tap_pixel_range))) {
                     var origEvent = e.originalEvent;
                     var touchData = [ ];
 					
@@ -559,7 +570,6 @@
                 $this.data('callee2', arguments.callee);
                 finalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                 finalCoord.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
-                window.clearTimeout(settings.hold_timer);
 
                 var swipedir;
 
