@@ -556,11 +556,6 @@
                     'time': new Date().getTime(),
                     'target': e.target
                 };
-
-                // For some reason, we need to add a 100ms pause in order to trigger swiping
-                // on Playbooks:
-                var dt = new Date();
-                while ((new Date()) - dt < 100) {}
             }
 
             // Store coordinates as finger is swiping
