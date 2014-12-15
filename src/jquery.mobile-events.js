@@ -484,7 +484,7 @@
 						touchData.push( touch );
 					}
 					
-					console.log(touches);
+//					console.log(touches);
 					
 					switch( touches.length )
 					{
