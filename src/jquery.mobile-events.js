@@ -88,11 +88,11 @@
                     touchData = {
                         'position': {
                             'x': ((settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX),
-                            'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY,
+                            'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
                         },
                         'offset': {
                             'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
-                            'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY,
+                            'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
                         },
                         'time': new Date().getTime(),
                         'target': e.target
@@ -121,11 +121,11 @@
 					touchData = {
                         'position': {
                             'x': ((settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX),
-                            'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY,
+                            'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
                         },
                         'offset': {
                             'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
-                            'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY,
+                            'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
                         },
                         'time': new Date().getTime(),
                         'target': e.target
@@ -386,11 +386,11 @@
                             var touchData = {
                                 'position': {
                                     'x': (settings.touch_capable) ? origEvent.changedTouches[0].screenX : e.screenX,
-                                    'y': (settings.touch_capable) ? origEvent.changedTouches[0].screenY : e.screenY,
+                                    'y': (settings.touch_capable) ? origEvent.changedTouches[0].screenY : e.screenY
                                 },
                                 'offset': {
                                     'x': (settings.touch_capable) ? origEvent.changedTouches[0].pageX - origEvent.changedTouches[0].target.offsetLeft : e.offsetX,
-                                    'y': (settings.touch_capable) ? origEvent.changedTouches[0].pageY - origEvent.changedTouches[0].target.offsetTop : e.offsetY,
+                                    'y': (settings.touch_capable) ? origEvent.changedTouches[0].pageY - origEvent.changedTouches[0].target.offsetTop : e.offsetY
                                 },
                                 'time': new Date().getTime(),
                                 'target': e.target
@@ -460,11 +460,11 @@
 						var touch = {
 							'position': {
 								'x': (settings.touch_capable) ? origEvent.changedTouches[i].screenX : e.screenX,
-								'y': (settings.touch_capable) ? origEvent.changedTouches[i].screenY : e.screenY,
+								'y': (settings.touch_capable) ? origEvent.changedTouches[i].screenY : e.screenY
 							},
 							'offset': {
 								'x': (settings.touch_capable) ? origEvent.changedTouches[i].pageX - origEvent.changedTouches[i].target.offsetLeft : e.offsetX,
-								'y': (settings.touch_capable) ? origEvent.changedTouches[i].pageY - origEvent.changedTouches[i].target.offsetTop : e.offsetY,
+								'y': (settings.touch_capable) ? origEvent.changedTouches[i].pageY - origEvent.changedTouches[i].target.offsetTop : e.offsetY
 							},
 							'time': new Date().getTime(),
 							'target': e.target
@@ -536,11 +536,11 @@
                 startEvnt = {
                     'position': {
                         'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
-                        'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY,
+                        'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
                     },
                     'offset': {
                         'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
-                        'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY,
+                        'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
                     },
                     'time': new Date().getTime(),
                     'target': e.target
@@ -593,11 +593,11 @@
                     endEvnt = {
                         'position': {
                             'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
-                            'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY,
+                            'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
                         },
                         'offset': {
                             'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
-                            'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY,
+                            'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
                         },
                         'time': new Date().getTime(),
                         'target': e.target
@@ -635,11 +635,11 @@
                     endEvnt = {
                         'position': {
                             'x': (settings.touch_capable) ? origEvent.changedTouches[0].screenX : e.screenX,
-                            'y': (settings.touch_capable) ? origEvent.changedTouches[0].screenY : e.screenY,
+                            'y': (settings.touch_capable) ? origEvent.changedTouches[0].screenY : e.screenY
                         },
                         'offset': {
                             'x': (settings.touch_capable) ? origEvent.changedTouches[0].pageX - origEvent.changedTouches[0].target.offsetLeft : e.offsetX,
-                            'y': (settings.touch_capable) ? origEvent.changedTouches[0].pageY - origEvent.changedTouches[0].target.offsetTop : e.offsetY,
+                            'y': (settings.touch_capable) ? origEvent.changedTouches[0].pageY - origEvent.changedTouches[0].target.offsetTop : e.offsetY
                         },
                         'time': new Date().getTime(),
                         'target': e.target
