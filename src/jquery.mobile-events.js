@@ -94,7 +94,7 @@
                             'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
                             'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY,
                         },
-                        'time': new Date().getTime(),
+                        'time': Date.now(),
                         'target': e.target
                     };
 
@@ -127,7 +127,7 @@
                             'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
                             'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY,
                         },
-                        'time': new Date().getTime(),
+                        'time': Date.now(),
                         'target': e.target
                     };
     				
@@ -160,7 +160,7 @@
                         'x': (settings.touch_capable) ? origEvent.changedTouches[0].pageX - origEvent.changedTouches[0].target.offsetLeft : e.offsetX,
                         'y': (settings.touch_capable) ? origEvent.changedTouches[0].pageY - origEvent.changedTouches[0].target.offsetTop : e.offsetY
                     },
-                    'time': new Date().getTime(),
+                    'time': Date.now(),
                     'target': e.target
                 };
                 triggerCustomEvent(thisObject, 'tapend', e, touchData);
@@ -194,7 +194,7 @@
                     origTarget = e.target;
 
                     var origEvent = e.originalEvent;
-                    var start_time = new Date().getTime(),
+                    var start_time = Date.now(),
                         startPosition = {
                             'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
                             'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
@@ -218,7 +218,7 @@
                         if (e.target == origTarget && ((start_pos.x == end_x && start_pos.y == end_y) || (diff_x >= -(settings.tap_pixel_range) && diff_x <= settings.tap_pixel_range && diff_y >= -(settings.tap_pixel_range) && diff_y <= settings.tap_pixel_range))) {
                             $this.data('tapheld', true);
 
-                            var end_time = new Date().getTime(),
+                            var end_time = Date.now(),
                                 endPosition = {
                                     'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
                                     'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
@@ -295,14 +295,14 @@
                         'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
                         'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
                     },
-                    'time': new Date().getTime(),
+                    'time': Date.now(),
                     'target': e.target
                 };
 
                 return true;
             }).on(settings.endevent, function (e) {
 				
-                var now = new Date().getTime();
+                var now = Date.now();
                 var lastTouch = $this.data('lastTouch') || now + 1;
                 var delta = now - lastTouch;
                 window.clearTimeout(action);
@@ -322,7 +322,7 @@
                             'x': (settings.touch_capable) ? e.originalEvent.changedTouches[0].pageX - e.originalEvent.changedTouches[0].target.offsetLeft : e.offsetX,
                             'y': (settings.touch_capable) ? e.originalEvent.changedTouches[0].pageY - e.originalEvent.changedTouches[0].target.offsetTop : e.offsetY
                         },
-                        'time': new Date().getTime(),
+                        'time': Date.now(),
                         'target': e.target
                     }
 
@@ -373,7 +373,7 @@
                 if (e.which && e.which !== 1) {
                     return false;
                 } else {
-                    startTime = new Date().getTime();
+                    startTime = Date.now();
                     origTarget = e.target;
                     $this.data('callee1', arguments.callee);
 
@@ -403,7 +403,7 @@
                                     'x': (settings.touch_capable) ? origEvent.changedTouches[0].pageX - origEvent.changedTouches[0].target.offsetLeft : e.offsetX,
                                     'y': (settings.touch_capable) ? origEvent.changedTouches[0].pageY - origEvent.changedTouches[0].target.offsetTop : e.offsetY,
                                 },
-                                'time': new Date().getTime(),
+                                'time': Date.now(),
                                 'target': e.target
                             };
                             
@@ -446,7 +446,7 @@
                     started = true;
                     start_pos.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                     start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
-                    start_time = new Date().getTime();
+                    start_time = Date.now();
                     origTarget = e.target;
 					
 					touches = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches : [ e ];
@@ -462,7 +462,7 @@
                     diff_y = (start_pos.y - end_y),
                     eventName;
 					
-                if (origTarget == e.target && started && ((new Date().getTime() - start_time) < settings.taphold_threshold) && ((start_pos.x == end_x && start_pos.y == end_y) || (diff_x >= -(settings.tap_pixel_range) && diff_x <= settings.tap_pixel_range && diff_y >= -(settings.tap_pixel_range) && diff_y <= settings.tap_pixel_range))) {
+                if (origTarget == e.target && started && ((Date.now() - start_time) < settings.taphold_threshold) && ((start_pos.x == end_x && start_pos.y == end_y) || (diff_x >= -(settings.tap_pixel_range) && diff_x <= settings.tap_pixel_range && diff_y >= -(settings.tap_pixel_range) && diff_y <= settings.tap_pixel_range))) {
                     var origEvent = e.originalEvent;
                     var touchData = [ ];
 					
@@ -477,7 +477,7 @@
                                 'x': (settings.touch_capable) ? origEvent.changedTouches[i].pageX - origEvent.changedTouches[i].target.offsetLeft : e.offsetX,
                                 'y': (settings.touch_capable) ? origEvent.changedTouches[i].pageY - origEvent.changedTouches[i].target.offsetTop : e.offsetY,
                             },
-                            'time': new Date().getTime(),
+                            'time': Date.now(),
                             'target': e.target
                         };
                     	
@@ -551,7 +551,7 @@
                         'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
                         'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY,
                     },
-                    'time': new Date().getTime(),
+                    'time': Date.now(),
                     'target': e.target
                 };
             }
@@ -602,7 +602,7 @@
                             'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
                             'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY,
                         },
-                        'time': new Date().getTime(),
+                        'time': Date.now(),
                         'target': e.target
                     };
 
@@ -644,7 +644,7 @@
                             'x': (settings.touch_capable) ? origEvent.changedTouches[0].pageX - origEvent.changedTouches[0].target.offsetLeft : e.offsetX,
                             'y': (settings.touch_capable) ? origEvent.changedTouches[0].pageY - origEvent.changedTouches[0].target.offsetTop : e.offsetY,
                         },
-                        'time': new Date().getTime(),
+                        'time': Date.now(),
                         'target': e.target
                     };
 
@@ -737,8 +737,8 @@
         };
 
     if (settings.orientation_support) {
-        var ww = window.innerWidth || $(window).width(),
-            wh = window.innerHeight || $(window).height(),
+        var ww = window.innerWidth || win.width(),
+            wh = window.innerHeight || win.height(),
             landscape_threshold = 50;
 
         initial_orientation_is_landscape = ww > wh && (ww - wh) > landscape_threshold;
@@ -824,7 +824,7 @@
 
     var throttle = 250,
         throttle_handler = function () {
-            curr = (new Date()).getTime();
+            curr = Date.now();
             diff = curr - lastCall;
 
             if (diff >= throttle) {
