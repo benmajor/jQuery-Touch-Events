@@ -183,7 +183,7 @@
                     x: 0,
                     y: 0
                 },
-				end_x = 0,
+                end_x = 0,
                 end_y = 0;
 
             $this.on(settings.startevent, function (e) {
@@ -207,13 +207,13 @@
                     start_pos.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                     start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
 
-					end_x = start_pos.x;
-					end_y = start_pos.y;
+                    end_x = start_pos.x;
+                    end_y = start_pos.y;
 
                     settings.hold_timer = window.setTimeout(function () {
 
                         var diff_x = (start_pos.x - end_x),
-							diff_y = (start_pos.y - end_y);
+                            diff_y = (start_pos.y - end_y);
 
                         if (e.target == origTarget && ((start_pos.x == end_x && start_pos.y == end_y) || (diff_x >= -(settings.tap_pixel_range) && diff_x <= settings.tap_pixel_range && diff_y >= -(settings.tap_pixel_range) && diff_y <= settings.tap_pixel_range))) {
                             $this.data('tapheld', true);
@@ -252,10 +252,10 @@
                 $this.data('tapheld', false);
                 window.clearTimeout(settings.hold_timer);
             })
-			.on(settings.moveevent, function (e) {
-				$this.data('callee3', arguments.callee);
+            .on(settings.moveevent, function (e) {
+                $this.data('callee3', arguments.callee);
 				
-				end_x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
+                end_x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                 end_y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
             });
         },
@@ -457,12 +457,12 @@
 
                 // Only trigger if they've started, and the target matches:
                 var end_x = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX,
-					end_y = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY,
-					diff_x = (start_pos.x - end_x),
-					diff_y = (start_pos.y - end_y),
-					eventName;
+                    end_y = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY,
+                    diff_x = (start_pos.x - end_x),
+                    diff_y = (start_pos.y - end_y),
+                    eventName;
 					
-				if (origTarget == e.target && started && ((new Date().getTime() - start_time) < settings.taphold_threshold) && ((start_pos.x == end_x && start_pos.y == end_y) || (diff_x >= -(settings.tap_pixel_range) && diff_x <= settings.tap_pixel_range && diff_y >= -(settings.tap_pixel_range) && diff_y <= settings.tap_pixel_range))) {
+                if (origTarget == e.target && started && ((new Date().getTime() - start_time) < settings.taphold_threshold) && ((start_pos.x == end_x && start_pos.y == end_y) || (diff_x >= -(settings.tap_pixel_range) && diff_x <= settings.tap_pixel_range && diff_y >= -(settings.tap_pixel_range) && diff_y <= settings.tap_pixel_range))) {
                     var origEvent = e.originalEvent;
                     var touchData = [ ];
 					
