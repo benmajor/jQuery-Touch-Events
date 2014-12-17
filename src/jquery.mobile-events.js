@@ -280,26 +280,26 @@
             $this.on(settings.startevent, function (e) {
                 if (e.which && e.which !== 1) {
                     return false;
-                } 
-				$this.data('doubletapped', false);
-				origTarget = e.target;
-				$this.data('callee1', arguments.callee);
+                }
+                $this.data('doubletapped', false);
+                origTarget = e.target;
+                $this.data('callee1', arguments.callee);
 
-				origEvent = e.originalEvent;
-				firstTap = {
-					'position': {
-						'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
-						'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
-					},
-					'offset': {
-						'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
-						'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
-					},
-					'time': new Date().getTime(),
-					'target': e.target
-				};
+                origEvent = e.originalEvent;
+                firstTap = {
+                    'position': {
+                        'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
+                        'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
+                    },
+                    'offset': {
+                        'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
+                        'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
+                    },
+                    'time': new Date().getTime(),
+                    'target': e.target
+                };
 
-				return true;
+                return true;
             }).on(settings.endevent, function (e) {
 				
                 var now = new Date().getTime();
@@ -332,15 +332,15 @@
                         'interval': lastTap.time - firstTap.time
                     };
 
-					if (!cooling) {
-						triggerCustomEvent(thisObject, 'doubletap', e, touchData);
-					}
-					
-					cooling = true;
-					
-					cooloff = window.setTimeout(function (e) {
-						cooling = false;
-					}, settings.doubletap_int);
+                    if (!cooling) {
+                    	triggerCustomEvent(thisObject, 'doubletap', e, touchData);
+                    }
+                    
+                    cooling = true;
+                    
+                    cooloff = window.setTimeout(function (e) {
+                    	cooling = false;
+                    }, settings.doubletap_int);
 					
                 } else {
                     $this.data('lastTouch', now);
@@ -435,7 +435,7 @@
                     x: 0,
                     y: 0
                 },
-				touches;
+                touches;
 
             $this.on(settings.startevent, function (e) {
                 $this.data('callee1', arguments.callee);
@@ -466,44 +466,42 @@
                     var origEvent = e.originalEvent;
                     var touchData = [ ];
 					
-					for( var i = 0; i < touches.length; i++)
-					{
-						var touch = {
-							'position': {
-								'x': (settings.touch_capable) ? origEvent.changedTouches[i].screenX : e.screenX,
-								'y': (settings.touch_capable) ? origEvent.changedTouches[i].screenY : e.screenY,
-							},
-							'offset': {
-								'x': (settings.touch_capable) ? origEvent.changedTouches[i].pageX - origEvent.changedTouches[i].target.offsetLeft : e.offsetX,
-								'y': (settings.touch_capable) ? origEvent.changedTouches[i].pageY - origEvent.changedTouches[i].target.offsetTop : e.offsetY,
-							},
-							'time': new Date().getTime(),
-							'target': e.target
-						};
-						
-						touchData.push( touch );
-					}
-					
-//					console.log(touches);
-					
-					switch( touches.length )
-					{
-						case 1:
-							eventName = 'tap';
-							break;
-						
-						case 2:
-							eventName = 'tap2';
-							break;
-						
-						case 3:
-							eventName = 'tap3';
-							break;
-						
-						case 4:
-							eventName = 'tap4';
-							break;
-					}
+                    for( var i = 0; i < touches.length; i++)
+                    {
+                    	var touch = {
+                    		'position': {
+                    			'x': (settings.touch_capable) ? origEvent.changedTouches[i].screenX : e.screenX,
+                    			'y': (settings.touch_capable) ? origEvent.changedTouches[i].screenY : e.screenY,
+                    		},
+                    		'offset': {
+                    			'x': (settings.touch_capable) ? origEvent.changedTouches[i].pageX - origEvent.changedTouches[i].target.offsetLeft : e.offsetX,
+                    			'y': (settings.touch_capable) ? origEvent.changedTouches[i].pageY - origEvent.changedTouches[i].target.offsetTop : e.offsetY,
+                    		},
+                    		'time': new Date().getTime(),
+                    		'target': e.target
+                    	};
+                    	
+                    	touchData.push( touch );
+                    }
+                    
+                    switch( touches.length )
+                    {
+                    	case 1:
+                    		eventName = 'tap';
+                    		break;
+                    	
+                    	case 2:
+                    		eventName = 'tap2';
+                    		break;
+                    	
+                    	case 3:
+                    		eventName = 'tap3';
+                    		break;
+                    	
+                    	case 4:
+                    		eventName = 'tap4';
+                    		break;
+                    }
 					
                     triggerCustomEvent(thisObject, eventName, e, touchData);
                 }
