@@ -449,7 +449,7 @@
                     start_time = Date.now();
                     origTarget = e.target;
 					
-					touches = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches : [ e ];
+                    touches = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches : [ e ];
                     return true;
                 }
             }).on(settings.endevent, function (e) {
