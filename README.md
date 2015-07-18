@@ -10,7 +10,7 @@ Version History:
 
 After almost 2 years in public beta, I am pleased to announce that the library is now officially launched as **version 1.0.0**. I'll be updating the version history over time with digests of fixes, features and improvements:
 
-+ **2015-07-18 - Version 1.0.0**
++ **2015-07-18 - Version 1.0.0** 
 The library officially entered 1.0.0 after minor bug fixes and final adjustments. 
 
 Utility Functions:
