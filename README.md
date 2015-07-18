@@ -5,6 +5,14 @@ This is a series of plugins that create additional events that can be used in co
 
 As explained, the events are each triggered by native touch events, or alternatively by click events. The plugin automatically detects whether the user's device is touch compatible, and will use the correct native events whenever required. It is hoped that these events will help to aid single-environment development with jQuery for mobile web app development.
 
+Version History:
+---------------
+
+After almost 2 years in public beta, I am pleased to announce that the library is now officially launched as **version 1.0.0**. I'll be updating the version history over time with digests of fixes, features and improvements:
+
+**2015-07-18 - Version 1.0.0**
+The library officially entered 1.0.0 after minor bug fixes and final adjustments. 
+
 Utility Functions:
 -----------------
 In addition to the numerous additional events that are provided, the library also includes a number of utility functions that can be used to further leverage the power of native events within your website or application. These utility functions can be used for unifying basic events, such as `tapstart` or `mousedown`.
