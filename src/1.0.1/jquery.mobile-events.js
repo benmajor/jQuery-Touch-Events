@@ -42,7 +42,7 @@
             taphold_threshold: 750,
             doubletap_int: 500,
 
-            touch_capable: ('ontouchstart' in window && !isChromeDesktop),
+            touch_capable: (window.navigator.msPointerEnabled) ? false : ('ontouchstart' in window && !isChromeDesktop),
             orientation_support: ('orientation' in window && 'onorientationchange' in window),
 
             startevent:  (window.navigator.msPointerEnabled) ? 'MSPointerDown' : (('ontouchstart' in window && !isChromeDesktop) ? 'touchstart' : 'mousedown'),
