@@ -1,7 +1,7 @@
 {
     "name": "jquery-touch-events",
     "version": "1.0.1",
-    "main": "jquery.mobile-events.js.js",
+    "main": "src/1.0.1/jquery.mobile-events.js.js",
     "ignore": [
         "bower.json",
     ],
