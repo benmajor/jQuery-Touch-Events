@@ -141,7 +141,7 @@
         remove: function() {
             $(this).off(settings.moveevent, $(this).data.callee);
         }
-    }
+    };
 
     // tapend Event:
     $.event.special.tapend = {
@@ -181,7 +181,6 @@
             var thisObject = this,
                 $this = $(thisObject),
                 origTarget,
-                timer,
                 start_pos = {
                     x: 0,
                     y: 0
@@ -242,7 +241,7 @@
                                 'endOffset': endOffset,
                                 'duration': duration,
                                 'target': e.target
-                            }
+                            };
                             $this.data('callee1', tapHoldFunc1);
                             triggerCustomEvent(thisObject, 'taphold', e, touchData);
                         }
@@ -327,7 +326,7 @@
                         },
                         'time': Date.now(),
                         'target': e.target
-                    }
+                    };
 
                     var touchData = {
                         'firstTap': firstTap,
@@ -341,13 +340,13 @@
                     
                     cooling = true;
                     
-                    cooloff = window.setTimeout(function (e) {
+                    cooloff = window.setTimeout(function () {
                     	cooling = false;
                     }, settings.doubletap_int);
 					
                 } else {
                     $this.data('lastTouch', now);
-                    action = window.setTimeout(function (e) {
+                    action = window.setTimeout(function () {
                         window.clearTimeout(action);
                     }, settings.doubletap_int, [e]);
                 }
@@ -676,7 +675,7 @@
                         'xAmount': xAmount,
                         'yAmount': yAmount,
                         'duration': endEvnt.time - startEvnt.time
-                    }
+                    };
                     $this.trigger('swipeend', touchData);
                 }
 
@@ -866,8 +865,8 @@
         swipedown: 'swipe',
         swipeleft: 'swipe',
         swipeend: 'swipe',
-		tap2: 'tap'
-    }, function (e, srcE, touchData) {
+        tap2: 'tap'
+    }, function (e, srcE) {
         $.event.special[e] = {
             setup: function () {
                 $(this).on(srcE, $.noop);
@@ -875,4 +874,4 @@
         };
     });
 
-})(jQuery);
+}(jQuery));
