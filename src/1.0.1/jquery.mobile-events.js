@@ -42,13 +42,13 @@
             taphold_threshold: 750,
             doubletap_int: 500,
 
-            touch_capable: ('ontouchstart' in window && !isChromeDesktop),
+            touch_capable: (window.navigator.msPointerEnabled) ? false : ('ontouchstart' in window && !isChromeDesktop),
             orientation_support: ('orientation' in window && 'onorientationchange' in window),
 
-            startevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchstart' : 'mousedown',
-            endevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchend' : 'mouseup',
-            moveevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'mousemove',
-            tapevent: ('ontouchstart' in window && !isChromeDesktop) ? 'tap' : 'click',
+            startevent:  (window.navigator.msPointerEnabled) ? 'MSPointerDown' : (('ontouchstart' in window && !isChromeDesktop) ? 'touchstart' : 'mousedown'),
+            endevent:    (window.navigator.msPointerEnabled) ? 'MSPointerUp'   : (('ontouchstart' in window && !isChromeDesktop) ? 'touchend' : 'mouseup'),
+            moveevent:   (window.navigator.msPointerEnabled) ? 'MSPointerMove' : (('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'mousemove'),
+            tapevent:    ('ontouchstart' in window && !isChromeDesktop) ? 'tap' : 'click',
             scrollevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'scroll',
 
             hold_timer: null,
@@ -533,7 +533,7 @@
             // Screen touched, store the original coordinate
 
             function touchStart(e) {
-                $this = $(e.target);
+                $this = $(e.currentTarget);
                 $this.data('callee1', arguments.callee);
                 originalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                 originalCoord.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
@@ -559,7 +559,7 @@
             // Store coordinates as finger is swiping
 
             function touchMove(e) {
-                $this = $(e.target);
+                $this = $(e.currentTarget);
                 $this.data('callee2', arguments.callee);
                 finalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                 finalCoord.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
@@ -567,11 +567,11 @@
                 var swipedir;
 
                 // We need to check if the element to which the event was bound contains a data-xthreshold | data-vthreshold:
-                var ele_x_threshold = $this.data('xthreshold'),
-                    ele_y_threshold = $this.data('ythreshold'),
+                var ele_x_threshold = ($this.parent().data('xthreshold')) ? $this.parent().data('xthreshold') : $this.data('xthreshold'),
+                    ele_y_threshold = ($this.parent().data('ythreshold')) ? $this.parent().data('ythreshold') : $this.data('ythreshold'),
                     h_threshold = (typeof ele_x_threshold !== 'undefined' && ele_x_threshold !== false && parseInt(ele_x_threshold)) ? parseInt(ele_x_threshold) : settings.swipe_h_threshold,
-                    v_threshold = (typeof ele_y_threshold !== 'undefined' && ele_y_threshold !== false && parseInt(ele_y_threshold)) ? parseInt(ele_y_threshold) : settings.swipe_v_threshold;
-
+                    v_threshold = (typeof ele_y_threshold !== 'undefined' && ele_y_threshold !== false && parseInt(ele_y_threshold)) ? parseInt(ele_y_threshold) : settings.swipe_v_threshold; 
+                
                 if (originalCoord.y > finalCoord.y && (originalCoord.y - finalCoord.y > v_threshold)) {
                     swipedir = 'swipeup';
                 }
@@ -624,7 +624,7 @@
             }
 
             function touchEnd(e) {
-                $this = $(e.target);
+                $this = $(e.currentTarget);
                 var swipedir = "";
                 $this.data('callee3', arguments.callee);
                 if (hasSwiped) {

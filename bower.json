@@ -1,0 +1,11 @@
+{
+    "name": "jquery-touch-events",
+    "version": "1.0.1",
+    "main": "src/1.0.1/jquery.mobile-events.js",
+    "ignore": [
+        "bower.json"
+    ],
+    "dependencies": {
+        "jquery": ">=1.7.0"
+    }
+}
