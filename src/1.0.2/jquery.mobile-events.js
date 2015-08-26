@@ -24,6 +24,9 @@
  * THE SOFTWARE.
  * 
  */
+
+"use strict";
+
 (function ($) {
     $.attrFn = $.attrFn || {};
 
@@ -36,7 +39,7 @@
         isChromeDesktop = (agent.indexOf('chrome') > -1 && ((agent.indexOf('windows') > -1) || (agent.indexOf('macintosh') > -1) || (agent.indexOf('linux') > -1)) && agent.indexOf('mobile') < 0 && agent.indexOf('android') < 0),
 
         settings = {
-            tap_pixel_range: 5,
+            tap_pixel_range: 10,
             swipe_h_threshold: 50,
             swipe_v_threshold: 50,
             taphold_threshold: 750,
@@ -45,10 +48,10 @@
             touch_capable: (window.navigator.msPointerEnabled) ? false : ('ontouchstart' in window && !isChromeDesktop),
             orientation_support: ('orientation' in window && 'onorientationchange' in window),
 
-            startevent:  (window.navigator.msPointerEnabled) ? 'MSPointerDown' : (('ontouchstart' in window && !isChromeDesktop) ? 'touchstart' : 'mousedown'),
-            endevent:    (window.navigator.msPointerEnabled) ? 'MSPointerUp'   : (('ontouchstart' in window && !isChromeDesktop) ? 'touchend' : 'mouseup'),
-            moveevent:   (window.navigator.msPointerEnabled) ? 'MSPointerMove' : (('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'mousemove'),
-            tapevent:    ('ontouchstart' in window && !isChromeDesktop) ? 'tap' : 'click',
+            startevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchstart' : 'mousedown',
+            endevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchend' : 'mouseup',
+            moveevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'mousemove',
+            tapevent: ('ontouchstart' in window && !isChromeDesktop) ? 'tap' : 'click',
             scrollevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'scroll',
 
             hold_timer: null,
@@ -62,6 +65,8 @@
     $.getMoveEvent = function() { return settings.moveevent; };
     $.getTapEvent = function() { return settings.tapevent; };
     $.getScrollEvent = function() { return settings.scrollevent; };
+    // ORIGIN.TV - We add this function to be able to change the hold threshold:
+    $.setHoldThreshold = function(threshold) { settings.taphold_threshold = threshold; };
     
     // Add Event shortcuts:
     $.each(['tapstart', 'tapend', 'tapmove', 'tap', 'tap2', 'tap3', 'tap4', 'singletap', 'doubletap', 'taphold', 'swipe', 'swipeup', 'swiperight', 'swipedown', 'swipeleft', 'swipeend', 'scrollstart', 'scrollend', 'orientationchange'], function (i, name) {
@@ -78,8 +83,8 @@
             var thisObject = this,
                 $this = $(thisObject);
 
-            $this.on(settings.startevent, function (e) {
-                $this.data('callee', arguments.callee);
+            $this.on(settings.startevent, function tapStartFunc(e) {
+                $this.data('callee', tapStartFunc);
                 if (e.which && e.which !== 1) {
                     return false;
                 }
@@ -114,8 +119,8 @@
             var thisObject = this,
             $this = $(thisObject);
     			
-            $this.on(settings.moveevent, function(e) {
-                $this.data('callee', arguments.callee);
+            $this.on(settings.moveevent, function tapMoveFunc(e) {
+                $this.data('callee', tapMoveFunc);
     			
                 var origEvent = e.originalEvent,
                     touchData = {
@@ -146,9 +151,9 @@
             var thisObject = this,
                 $this = $(thisObject);
 
-            $this.on(settings.endevent, function (e) {
+            $this.on(settings.endevent, function tapEndFunc(e) {
                 // Touch event data:
-                $this.data('callee', arguments.callee);
+                $this.data('callee', tapEndFunc);
 
                 var origEvent = e.originalEvent;
                 var touchData = {
@@ -186,7 +191,7 @@
                 end_x = 0,
                 end_y = 0;
 
-            $this.on(settings.startevent, function (e) {
+            $this.on(settings.startevent, function tapHoldFunc1(e) {
                 if (e.which && e.which !== 1) {
                     return false;
                 } else {
@@ -227,7 +232,7 @@
                                     'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
                                     'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
                                 };
-                            duration = end_time - start_time;
+                            var duration = end_time - start_time;
 
                             // Build the touch data:
                             var touchData = {
@@ -240,20 +245,20 @@
                                 'duration': duration,
                                 'target': e.target
                             }
-                            $this.data('callee1', arguments.callee);
+                            $this.data('callee1', tapHoldFunc1);
                             triggerCustomEvent(thisObject, 'taphold', e, touchData);
                         }
                     }, settings.taphold_threshold);
 
                     return true;
                 }
-            }).on(settings.endevent, function () {
-                $this.data('callee2', arguments.callee);
+            }).on(settings.endevent, function tapHoldFunc2() {
+                $this.data('callee2', tapHoldFunc2);
                 $this.data('tapheld', false);
                 window.clearTimeout(settings.hold_timer);
             })
-            .on(settings.moveevent, function (e) {
-                $this.data('callee3', arguments.callee);
+            .on(settings.moveevent, function tapHoldFunc3(e) {
+                $this.data('callee3', tapHoldFunc3);
 				
                 end_x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                 end_y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
@@ -277,13 +282,13 @@
 				cooloff,
 				cooling = false;
 
-            $this.on(settings.startevent, function (e) {
+            $this.on(settings.startevent, function doubleTapFunc1(e) {
                 if (e.which && e.which !== 1) {
                     return false;
                 }
                 $this.data('doubletapped', false);
                 origTarget = e.target;
-                $this.data('callee1', arguments.callee);
+                $this.data('callee1', doubleTapFunc1);
 
                 origEvent = e.originalEvent;
                 firstTap = {
@@ -300,13 +305,13 @@
                 };
 
                 return true;
-            }).on(settings.endevent, function (e) {
+            }).on(settings.endevent, function doubleTapFunc2(e) {
 				
                 var now = Date.now();
                 var lastTouch = $this.data('lastTouch') || now + 1;
                 var delta = now - lastTouch;
                 window.clearTimeout(action);
-                $this.data('callee2', arguments.callee);
+                $this.data('callee2', doubleTapFunc2);
 
                 if (delta < settings.doubletap_int && (e.target == origTarget) && delta > 100) {
                     $this.data('doubletapped', true);
@@ -369,25 +374,25 @@
                     y: 0
                 };
 
-            $this.on(settings.startevent, function (e) {
+            $this.on(settings.startevent, function singleTapFunc1(e) {
                 if (e.which && e.which !== 1) {
                     return false;
                 } else {
                     startTime = Date.now();
                     origTarget = e.target;
-                    $this.data('callee1', arguments.callee);
+                    $this.data('callee1', singleTapFunc1);
 
                     // Get the start x and y position:
                     start_pos.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                     start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
                     return true;
                 }
-            }).on(settings.endevent, function (e) {
-                $this.data('callee2', arguments.callee);
+            }).on(settings.endevent, function singleTapFunc2(e) {
+                $this.data('callee2', singleTapFunc2);
                 if (e.target == origTarget) {
                     // Get the end point:
-                    end_pos_x = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX;
-                    end_pos_y = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY;
+                    var end_pos_x = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX;
+                    var end_pos_y = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY;
                     
                     // We need to check if it was a taphold:
 
@@ -437,8 +442,8 @@
                 },
                 touches;
 
-            $this.on(settings.startevent, function (e) {
-                $this.data('callee1', arguments.callee);
+            $this.on(settings.startevent, function tapFunc1(e) {
+                $this.data('callee1', tapFunc1);
 
                 if (e.which && e.which !== 1) {
                     return false;
@@ -452,8 +457,8 @@
                     touches = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches : [ e ];
                     return true;
                 }
-            }).on(settings.endevent, function (e) {
-                $this.data('callee2', arguments.callee);
+            }).on(settings.endevent, function tapFunc2(e) {
+                $this.data('callee2', tapFunc2);
 
                 // Only trigger if they've started, and the target matches:
                 var end_x = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX,
@@ -534,7 +539,7 @@
 
             function touchStart(e) {
                 $this = $(e.currentTarget);
-                $this.data('callee1', arguments.callee);
+                $this.data('callee1', touchStart);
                 originalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                 originalCoord.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
                 finalCoord.x = originalCoord.x;
@@ -560,7 +565,7 @@
 
             function touchMove(e) {
                 $this = $(e.currentTarget);
-                $this.data('callee2', arguments.callee);
+                $this.data('callee2', touchMove);
                 finalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                 finalCoord.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
 
@@ -593,7 +598,7 @@
 
                     // Read event data into our endEvnt:
                     var origEvent = e.originalEvent;
-                    endEvnt = {
+                    var endEvnt = {
                         'position': {
                             'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
                             'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
@@ -617,7 +622,7 @@
                         'xAmount': xAmount,
                         'yAmount': yAmount,
                         'duration': endEvnt.time - startEvnt.time
-                    }
+                    };
                     hasSwiped = true;
                     $this.trigger('swipe', touchData).trigger(swipedir, touchData);
                 }
@@ -626,7 +631,7 @@
             function touchEnd(e) {
                 $this = $(e.currentTarget);
                 var swipedir = "";
-                $this.data('callee3', arguments.callee);
+                $this.data('callee3', touchEnd);
                 if (hasSwiped) {
                     // We need to check if the element to which the event was bound contains a data-xthreshold | data-vthreshold:
                     var ele_x_threshold = $this.data('xthreshold'),
@@ -635,7 +640,7 @@
                         v_threshold = (typeof ele_y_threshold !== 'undefined' && ele_y_threshold !== false && parseInt(ele_y_threshold)) ? parseInt(ele_y_threshold) : settings.swipe_v_threshold;
 
                     var origEvent = e.originalEvent;
-                    endEvnt = {
+                    var endEvnt = {
                         'position': {
                             'x': (settings.touch_capable) ? origEvent.changedTouches[0].screenX : e.screenX,
                             'y': (settings.touch_capable) ? origEvent.changedTouches[0].screenY : e.screenY
@@ -705,8 +710,8 @@
             }
 
             // iPhone triggers scroll after a small delay; use touchmove instead
-            $this.on(settings.scrollevent, function (event) {
-                $this.data('callee', arguments.callee);
+            $this.on(settings.scrollevent, function scrollFunc(event) {
+                $this.data('callee', scrollFunc);
 
                 if (!scrolling) {
                     trigger(event, true);
