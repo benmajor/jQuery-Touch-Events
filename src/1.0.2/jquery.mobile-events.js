@@ -39,7 +39,7 @@
         isChromeDesktop = (agent.indexOf('chrome') > -1 && ((agent.indexOf('windows') > -1) || (agent.indexOf('macintosh') > -1) || (agent.indexOf('linux') > -1)) && agent.indexOf('mobile') < 0 && agent.indexOf('android') < 0),
 
         settings = {
-            tap_pixel_range: 10,
+            tap_pixel_range: 5,
             swipe_h_threshold: 50,
             swipe_v_threshold: 50,
             taphold_threshold: 750,
@@ -65,8 +65,6 @@
     $.getMoveEvent = function() { return settings.moveevent; };
     $.getTapEvent = function() { return settings.tapevent; };
     $.getScrollEvent = function() { return settings.scrollevent; };
-    // ORIGIN.TV - We add this function to be able to change the hold threshold:
-    $.setHoldThreshold = function(threshold) { settings.taphold_threshold = threshold; };
     
     // Add Event shortcuts:
     $.each(['tapstart', 'tapend', 'tapmove', 'tap', 'tap2', 'tap3', 'tap4', 'singletap', 'doubletap', 'taphold', 'swipe', 'swipeup', 'swiperight', 'swipedown', 'swipeleft', 'swipeend', 'scrollstart', 'scrollend', 'orientationchange'], function (i, name) {
