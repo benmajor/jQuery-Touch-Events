@@ -48,10 +48,10 @@
             touch_capable: (window.navigator.msPointerEnabled) ? false : ('ontouchstart' in window && !isChromeDesktop),
             orientation_support: ('orientation' in window && 'onorientationchange' in window),
 
-            startevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchstart' : 'mousedown',
-            endevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchend' : 'mouseup',
-            moveevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'mousemove',
-            tapevent: ('ontouchstart' in window && !isChromeDesktop) ? 'tap' : 'click',
+            startevent:  (window.navigator.msPointerEnabled) ? 'MSPointerDown' : (('ontouchstart' in window && !isChromeDesktop) ? 'touchstart' : 'mousedown'),
+            endevent:    (window.navigator.msPointerEnabled) ? 'MSPointerUp'   : (('ontouchstart' in window && !isChromeDesktop) ? 'touchend' : 'mouseup'),
+            moveevent:   (window.navigator.msPointerEnabled) ? 'MSPointerMove' : (('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'mousemove'),
+            tapevent:    ('ontouchstart' in window && !isChromeDesktop) ? 'tap' : 'click',
             scrollevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'scroll',
 
             hold_timer: null,
