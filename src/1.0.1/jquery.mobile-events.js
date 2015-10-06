@@ -552,13 +552,17 @@
                         'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
                     },
                     'time': Date.now(),
-                    'target': e.target
+                    'target': e.target,
+                    'identifier': origEvent.touches[0].identifier
                 };
             }
 
             // Store coordinates as finger is swiping
 
             function touchMove(e) {
+                if (e.originalEvent.changedTouches[0].identifier !== startEvnt.identifier) {
+                    return;
+                }
                 $this = $(e.currentTarget);
                 $this.data('callee2', arguments.callee);
                 finalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
@@ -624,6 +628,9 @@
             }
 
             function touchEnd(e) {
+                if (e.originalEvent.changedTouches[0].identifier !== startEvnt.identifier) {
+                    return;
+                }
                 $this = $(e.currentTarget);
                 var swipedir = "";
                 $this.data('callee3', arguments.callee);
