@@ -553,14 +553,14 @@
                     },
                     'time': Date.now(),
                     'target': e.target,
-                    'identifier': origEvent.touches[0].identifier
+                    'identifier': origEvent.touches && origEvent.touches[0].identifier
                 };
             }
 
             // Store coordinates as finger is swiping
 
             function touchMove(e) {
-                if (e.originalEvent.changedTouches[0].identifier !== startEvnt.identifier) {
+                if (e.originalEvent.changedTouches && e.originalEvent.changedTouches && e.originalEvent.changedTouches[0].identifier !== startEvnt.identifier) {
                     return;
                 }
                 $this = $(e.currentTarget);
@@ -628,7 +628,7 @@
             }
 
             function touchEnd(e) {
-                if (e.originalEvent.changedTouches[0].identifier !== startEvnt.identifier) {
+                if (e.originalEvent.changedTouches && e.originalEvent.changedTouches[0].identifier !== startEvnt.identifier) {
                     return;
                 }
                 $this = $(e.currentTarget);
