@@ -96,7 +96,7 @@ $('#myElement').tap(function(e) {
 ```
 
 **Method chaining:**  
-Chaining has also been preserved, so you can easily use these events in conjuction with other jQuery functions, or attach multiple events in a single, chained LOC:  
+Chaining has also been preserved, so you can easily use these events in conjunction with other jQuery functions, or attach multiple events in a single, chained LOC:  
 ```
 $('#myElement').singletap(function() { 
     console.log('singletap');
