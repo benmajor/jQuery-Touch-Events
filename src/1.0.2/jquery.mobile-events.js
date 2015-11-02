@@ -338,13 +338,13 @@
 
                     if (!cooling) {
                     	triggerCustomEvent(thisObject, 'doubletap', e, touchData);
+                        firstTap = null;
                     }
                     
                     cooling = true;
                     
                     cooloff = window.setTimeout(function () {
                     	cooling = false;
-                        firstTap = null;
                     }, settings.doubletap_int);
 					
                 } else {
