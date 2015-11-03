@@ -274,7 +274,7 @@
                 $this = $(thisObject),
                 origTarget,
                 action,
-                firstTap,
+                firstTap = null,
                 origEvent,
 				cooloff,
 				cooling = false;
@@ -288,18 +288,20 @@
                 $this.data('callee1', doubleTapFunc1);
 
                 origEvent = e.originalEvent;
-                firstTap = {
-                    'position': {
-                        'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
-                        'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
-                    },
-                    'offset': {
-                        'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
-                        'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
-                    },
-                    'time': Date.now(),
-                    'target': e.target
-                };
+                if (!firstTap) {
+                    firstTap = {
+                        'position': {
+                            'x': (settings.touch_capable) ? origEvent.touches[0].screenX : e.screenX,
+                            'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
+                        },
+                        'offset': {
+                            'x': (settings.touch_capable) ? origEvent.touches[0].pageX - origEvent.touches[0].target.offsetLeft : e.offsetX,
+                            'y': (settings.touch_capable) ? origEvent.touches[0].pageY - origEvent.touches[0].target.offsetTop : e.offsetY
+                        },
+                        'time': Date.now(),
+                        'target': e.target
+                    };
+                }
 
                 return true;
             }).on(settings.endevent, function doubleTapFunc2(e) {
@@ -336,6 +338,7 @@
 
                     if (!cooling) {
                     	triggerCustomEvent(thisObject, 'doubletap', e, touchData);
+                        firstTap = null;
                     }
                     
                     cooling = true;
@@ -347,6 +350,7 @@
                 } else {
                     $this.data('lastTouch', now);
                     action = window.setTimeout(function () {
+                        firstTap = null;
                         window.clearTimeout(action);
                     }, settings.doubletap_int, [e]);
                 }
