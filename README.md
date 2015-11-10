@@ -238,11 +238,11 @@ Returns `touchmove` for touch-enabled devices, or `scroll` for standard environm
 
 I have put together a simple demo application that shows the numerous events in action. The console on the left hand side is used to show information about the events that have been called. You can examine the code easily by viewing the page's source to lear more about how this works. Please click on the below to check out the demo:
 
-http://ben-major.co.uk/jquery-mobile-events/
+http://lincweb.co.uk/labs/jquery-touch-events/demo/
 
 Please be aware that this demonstration uses Google's hosted jQuery file, and also pulls the latest version of the events library from GitHub. It is a great place to check the status of the library. Since this demo uses the vanilla code, it is a good idea to check the library functionality here for your own reference. If you're running into problems with the library, please check this demonstration using your device in the first instance. You can scan in the QR below to go directly to the web page:
 
-![Demonstration QR Code](http://qrfree.kaywa.com/?l=1&s=8&d=http%3A%2F%2Fben-major.co.uk%2Fjquery-mobile-events%2F)
+![Demonstration QR Code](http://qrfree.kaywa.com/?l=1&s=8&d=http://lincweb.co.uk/labs/jquery-touch-events/demo/)
 
 
 ## 9. Requirements:
