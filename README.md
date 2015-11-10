@@ -79,13 +79,13 @@ $('#myElement').trigger('tap');
 
 **Removing the event with ``.off()``, ``.die()`` and ``.unbind()``:**  
 ```
-$('#myElement').off('tap', hander);
+$('#myElement').off('tap', handler);
 ```  
 ```
-$('#myElement').die('tap', hander);
+$('#myElement').die('tap', handler);
 ```  
 ```
-$('#myElement').unbind('tap', hander);
+$('#myElement').unbind('tap', handler);
 ```
 
 **Using method wrapper:**  
