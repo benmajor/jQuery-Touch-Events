@@ -1,8 +1,8 @@
 /*!
  * jQuery Mobile Events
- * by Ben Major (www.ben-major.co.uk)
+ * by Ben Major (lincweb - www.lincweb.co.uk)
  *
- * Copyright 2011, Ben Major
+ * Copyright 2011-2015, Ben Major
  * Licensed under the MIT License:
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -45,12 +45,12 @@
             taphold_threshold: 750,
             doubletap_int: 500,
 
-            touch_capable: (window.navigator.msPointerEnabled) ? false : ('ontouchstart' in window && !isChromeDesktop),
+            touch_capable: ('ontouchstart' in window && !isChromeDesktop),
             orientation_support: ('orientation' in window && 'onorientationchange' in window),
 
-            startevent:  (window.navigator.msPointerEnabled) ? 'MSPointerDown' : (('ontouchstart' in window && !isChromeDesktop) ? 'touchstart' : 'mousedown'),
-            endevent:    (window.navigator.msPointerEnabled) ? 'MSPointerUp'   : (('ontouchstart' in window && !isChromeDesktop) ? 'touchend' : 'mouseup'),
-            moveevent:   (window.navigator.msPointerEnabled) ? 'MSPointerMove' : (('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'mousemove'),
+            startevent:  (('ontouchstart' in window && !isChromeDesktop) ? 'touchstart' : 'mousedown'),
+            endevent:    (('ontouchstart' in window && !isChromeDesktop) ? 'touchend' : 'mouseup'),
+            moveevent:   (('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'mousemove'),
             tapevent:    ('ontouchstart' in window && !isChromeDesktop) ? 'tap' : 'click',
             scrollevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'scroll',
 
@@ -78,10 +78,12 @@
     // tapstart Event:
     $.event.special.tapstart = {
         setup: function () {
+			
             var thisObject = this,
                 $this = $(thisObject);
-
+			
             $this.on(settings.startevent, function tapStartFunc(e) {
+				
                 $this.data('callee', tapStartFunc);
                 if (e.which && e.which !== 1) {
                     return false;
@@ -100,7 +102,7 @@
                         'time': Date.now(),
                         'target': e.target
                     };
-
+				
                 triggerCustomEvent(thisObject, 'tapstart', e, touchData);
                 return true;
             });
@@ -493,26 +495,7 @@
                         touchData.push( touch );
                     }
                     
-                    switch( touches.length )
-                    {
-                        case 1:
-                            eventName = 'tap';
-                            break;
-                    	
-                        case 2:
-                            eventName = 'tap2';
-                            break;
-                    	
-                        case 3:
-                            eventName = 'tap3';
-                            break;
-                    	
-                        case 4:
-                            eventName = 'tap4';
-                            break;
-                    }
-					
-                    triggerCustomEvent(thisObject, eventName, e, touchData);
+                    triggerCustomEvent(thisObject, 'tap', e, touchData);
                 }
             });
         },
