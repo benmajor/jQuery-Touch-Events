@@ -130,7 +130,7 @@ Fired after the user releases their finger from the target element (or releases 
 + **`tapmove`**  
 Fired as soon as the user begins moving their finger on an element (or moving their mouse, for desktop environments).
 + **`tap`**  
-This event is fired whenever the user taps and releases their finger on the target element. Caution should be observed when using this event in conjunction without tap events, especially ``doubletap``. This event will be fired twice when ``doubletap`` is used, so it is recommended to use ``singletap`` in this case.
+This event is fired whenever the user taps and releases their finger on the target element. Caution should be observed when using this event in conjunction with tap events, especially ``doubletap``. This event will be fired twice when ``doubletap`` is used, so it is recommended to use ``singletap`` in this case.
 + **`singletap`**  
 Unlike ``tap`` this event is only triggered once we are certain the user has only tapped the target element a single time. This will not be triggered by ``doubletap`` or ``taphold``, unlike ``tap``. Since we need to run some tests to make sure the user isn't double tapping or holding a tap on the target element, this event is fired with a short delay (currently of 500 milliseconds).
 + **`doubletap`**  
