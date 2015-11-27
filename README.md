@@ -63,6 +63,12 @@ Alternatively, you can also install jQuery-touch-events using Bower as follows:
 $ bower install jquery-touch-events
 ```
 
+Alternatively, you can also install jQuery-touch-events using NPM as follows:
+
+```
+$ npm install git+https://github.com/benmajor/jQuery-Touch-Events.git
+```
+
 ### 3. Usage:
 All of the events outlined above have been written using jQuery's ``event.special`` object, and so can be used in conjunction with jQuery's event handling functions, as well as shortcut wrappers. As a result, all of the events that are supported by this library may be handled using any of jQuery's own event-specific methods, such as `bind()`, `on()`, `live()` (for legacy) and `one()`. 
 
