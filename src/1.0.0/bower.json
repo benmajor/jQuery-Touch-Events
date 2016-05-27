@@ -1,5 +1,5 @@
 {
-    "name": "jquery-touch-events-1.0.0",
+    "name": "jquery-touch-events",
     "version": "1.0.0",
     "main": "src/jquery.mobile-events.js",
     "ignore": [
