@@ -24,7 +24,7 @@ As explained, the events are each triggered by native touch events, or alternati
 After almost 2 years in public beta, I am pleased to announce that the library is now officially launched as **version 1.0.0**. I'll be updating the version history over time with digests of fixes, features and improvements:
 
 + **Version 1.0.5** (2015-11-13
-  + Fixed a major bug where the reproted `offset` position of events was incorrect when inside of a parent element. 
+  + Fixed a major bug where the reported `offset` position of events was incorrect when inside of a parent element. 
 
 + **Version 1.0.4** (2015-11-12)
   + Regressed from `MSPointerEvent` for compatibility with IE11 and Edge
@@ -57,13 +57,19 @@ Once you have downloaded the JS files from the master branch, you should include
 <script type="text/javascript" src="path/to/jquery.mobile-events.min.js"></script>
 ```
 
+The awesome guys over at cdnjs have kindly added the library to their CDN so you can include it as follows directly into your application:
+
+```
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-touch-events/1.0.5/jquery.mobile-events.js"></script>
+```
+
 Alternatively, you can also install jQuery-touch-events using Bower as follows:
 
 ```
 $ bower install jquery-touch-events
 ```
 
-Alternatively, you can also install jQuery-touch-events using NPM as follows:
+jQuery Touch Events can also be installed using NPM as follows:
 
 ```
 $ npm install git+https://github.com/benmajor/jQuery-Touch-Events.git
