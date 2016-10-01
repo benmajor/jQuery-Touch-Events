@@ -62,7 +62,10 @@
     $.getMoveEvent = function() { return settings.moveevent; };
     $.getTapEvent = function() { return settings.tapevent; };
     $.getScrollEvent = function() { return settings.scrollevent; };
-    
+    var offsetTop = function() { return $(this).offset() ? $this.offset().top : 0; };
+    var offsetLeft = function() { return $(this).offset() ? $this.offset().left : 0; };
+    var offsetRight = function() { return $(this).offset() ? $this.offset().right : 0; };
+
     // Add Event shortcuts:
     $.each(['tapstart', 'tapend', 'tapmove', 'tap', 'tap2', 'tap3', 'tap4', 'singletap', 'doubletap', 'taphold', 'swipe', 'swipeup', 'swiperight', 'swipedown', 'swipeleft', 'swipeend', 'scrollstart', 'scrollend', 'orientationchange'], function (i, name) {
         $.fn[name] = function (fn) {
@@ -93,13 +96,13 @@
                             'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
                         },
                         'offset': {
-                            'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - $this.offset().left) : Math.round(e.pageX - $this.offset().left),
-                            'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - $this.offset().top) : Math.round(e.pageY - $this.offset().top)
+                            'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - offsetLeft()) : Math.round(e.pageX - offsetLeft()),
+                            'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - offsetTop()) : Math.round(e.pageY - offsetTop())
                         },
                         'time': Date.now(),
                         'target': e.target
                     };
-                
+
                 triggerCustomEvent(thisObject, 'tapstart', e, touchData);
                 return true;
             });
@@ -126,13 +129,13 @@
                             'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
                         },
                         'offset': {
-                            'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - $this.offset().left) : Math.round(e.pageX - $this.offset().left),
-                            'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - $this.offset().top) : Math.round(e.pageY - $this.offset().top)
+                            'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - offsetLeft()) : Math.round(e.pageX - offsetLeft()),
+                            'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - offsetTop()) : Math.round(e.pageY - offsetTop())
                         },
                         'time': Date.now(),
                         'target': e.target
                     };
-                    
+
                 triggerCustomEvent(thisObject, 'tapmove', e, touchData);
                 return true;
             });
@@ -159,8 +162,8 @@
                         'y': (settings.touch_capable) ? origEvent.changedTouches[0].screenY : e.screenY
                     },
                     'offset': {
-                        'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - $this.offset().left) : Math.round(e.pageX - $this.offset().left),
-                        'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - $this.offset().top) : Math.round(e.pageY - $this.offset().top)
+                        'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - offsetLeft()) : Math.round(e.pageX - offsetLeft()),
+                        'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - offsetTop()) : Math.round(e.pageY - offsetTop())
                     },
                     'time': Date.now(),
                     'target': e.target
@@ -226,8 +229,8 @@
                                     'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
                                 },
                                 endOffset = {
-                                    'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - $this.offset().left) : Math.round(e.pageX - $this.offset().left),
-                                    'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - $this.offset().top) : Math.round(e.pageY - $this.offset().top)
+                                    'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - offsetLeft()) : Math.round(e.pageX - offsetLeft()),
+                                    'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - offsetTop()) : Math.round(e.pageY - offsetTop())
                                 };
                             var duration = end_time - start_time;
 
@@ -296,8 +299,8 @@
                             'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
                         },
                         'offset': {
-                            'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - $this.offset().left) : Math.round(e.pageX - $this.offset().left),
-                            'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - $this.offset().top) : Math.round(e.pageY - $this.offset().top)
+                            'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - offsetLeft()) : Math.round(e.pageX - offsetLeft()),
+                            'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - offsetTop()) : Math.round(e.pageY - offsetTop())
                         },
                         'time': Date.now(),
                         'target': e.target
@@ -324,8 +327,8 @@
                             'y': (settings.touch_capable) ? e.originalEvent.changedTouches[0].screenY : e.screenY
                         },
                         'offset': {
-                            'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - $this.offset().left) : Math.round(e.pageX - $this.offset().left),
-                            'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - $this.offset().top) : Math.round(e.pageY - $this.offset().top)
+                            'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - offsetLeft()) : Math.round(e.pageX - offsetLeft()),
+                            'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - offsetTop()) : Math.round(e.pageY - offsetTop())
                         },
                         'time': Date.now(),
                         'target': e.target
@@ -407,13 +410,13 @@
                                     'y': (settings.touch_capable) ? origEvent.changedTouches[0].screenY : e.screenY
                                 },
                                 'offset': {
-                                    'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - $this.offset().left) : Math.round(e.pageX - $this.offset().left),
-                                    'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - $this.offset().top) : Math.round(e.pageY - $this.offset().top)
+                                    'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - offsetLeft()) : Math.round(e.pageX - offsetLeft()),
+                                    'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - offsetTop()) : Math.round(e.pageY - offsetTop())
                                 },
                                 'time': Date.now(),
                                 'target': e.target
                             };
-                            
+
                             // Was it a taphold?
                             if((touchData.time - startTime) < settings.taphold_threshold)
                             {
@@ -484,16 +487,16 @@
                                 'y': (settings.touch_capable) ? origEvent.changedTouches[i].screenY : e.screenY
                             },
                             'offset': {
-                                'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[i].pageX - $this.offset().left) : Math.round(e.pageX - $this.offset().left),
-                                'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[i].pageY - $this.offset().top) : Math.round(e.pageY - $this.offset().top)
+                                'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[i].pageX - offsetLeft()) : Math.round(e.pageX - offsetLeft()),
+                                'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[i].pageY - offsetTop()) : Math.round(e.pageY - offsetTop())
                             },
                             'time': Date.now(),
                             'target': e.target
                         };
-                        
+
                         touchData.push( touch );
                     }
-                    
+
                     triggerCustomEvent(thisObject, 'tap', e, touchData);
                 }
             });
@@ -539,8 +542,8 @@
                         'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
                     },
                     'offset': {
-                        'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - $this.offset().left) : Math.round(e.pageX - $this.offset().left),
-                        'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - $this.offset().top) : Math.round(e.pageY - $this.offset().top)
+                        'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - offsetLeft()) : Math.round(e.pageX - offsetLeft()),
+                        'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - offsetTop()) : Math.round(e.pageY - offsetTop())
                     },
                     'time': Date.now(),
                     'target': e.target
@@ -590,8 +593,8 @@
                             'y': (settings.touch_capable) ? origEvent.touches[0].screenY : e.screenY
                         },
                         'offset': {
-                            'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - $this.offset().left) : Math.round(e.pageX - $this.offset().left),
-                            'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - $this.offset().top) : Math.round(e.pageY - $this.offset().top)
+                            'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - offsetLeft()) : Math.round(e.pageX - offsetLeft()),
+                            'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - offsetTop()) : Math.round(e.pageY - offsetTop())
                         },
                         'time': Date.now(),
                         'target': e.target
@@ -632,8 +635,8 @@
                             'y': (settings.touch_capable) ? origEvent.changedTouches[0].screenY : e.screenY
                         },
                         'offset': {
-                            'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - $this.offset().left) : Math.round(e.pageX - $this.offset().left),
-                            'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - $this.offset().top) : Math.round(e.pageY - $this.offset().top)
+                            'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - offsetLeft()) : Math.round(e.pageX - offsetLeft()),
+                            'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - offsetTop()) : Math.round(e.pageY - offsetTop())
                         },
                         'time': Date.now(),
                         'target': e.target
