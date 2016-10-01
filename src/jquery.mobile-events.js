@@ -377,7 +377,8 @@
                 start_pos = {
                     x: 0,
                     y: 0
-                };
+                },
+                tapTimer;
 
             $this.on(settings.startevent, function singleTapFunc1(e) {
                 if (e.which && e.which !== 1) {
