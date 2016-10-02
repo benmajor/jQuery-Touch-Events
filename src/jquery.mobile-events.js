@@ -288,7 +288,6 @@
                     return false;
                 }
                 $this.data('doubletapped', false);
-                origTarget = e.target;
                 $this.data('callee1', doubleTapFunc1);
 
                 origEvent = e.originalEvent;
@@ -358,6 +357,7 @@
                         window.clearTimeout(action);
                     }, settings.doubletap_int, [e]);
                 }
+                origTarget = e.target;
                 $this.data('lastTouch', now);
             });
         },
