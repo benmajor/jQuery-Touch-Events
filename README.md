@@ -226,7 +226,7 @@ Each event provides different callback data. The following shows the numerous da
 
 `yAmount` - number of pixels the swipe occupied on the Y-axis (returned regardless of direction).
 
-`startEvent` - Object containing the same data as a `tap` event, but captured when swiping begins.
+`startEvnt` - Object containing the same data as a `tap` event, but captured when swiping begins.
 
 `endEvent` - Object containing the same data as a `tap` event, but captured when swiping is complete.
 
