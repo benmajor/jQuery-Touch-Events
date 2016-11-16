@@ -23,7 +23,11 @@ As explained, the events are each triggered by native touch events, or alternati
 
 After almost 2 years in public beta, I am pleased to announce that the library is now officially launched as **version 1.0.0**. I'll be updating the version history over time with digests of fixes, features and improvements:
 
-+ **Version 1.0.5** (2015-11-13
++ **Version 1.0.6** (2016-11-16)
+  + Added slop factor for `singletap`
+  + Fixed a bug where `offset()` was sometimes called on `null` (instead of `window`).
+  
++ **Version 1.0.5** (2015-11-13)
   + Fixed a major bug where the reported `offset` position of events was incorrect when inside of a parent element. 
 
 + **Version 1.0.4** (2015-11-12)
