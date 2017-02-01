@@ -2,7 +2,7 @@
  * jQuery Mobile Events
  * by Ben Major
  *
- * Copyright 2011-2015, Ben Major
+ * Copyright 2011-2017, Ben Major
  * Licensed under the MIT License:
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -35,9 +35,8 @@
     // The reason that we need to do this is because Chrome annoyingly
     // purports support for touch events even if the underlying hardware
     // does not!
-    var agent = navigator.userAgent.toLowerCase(),
-        isChromeDesktop = (agent.indexOf('chrome') > -1 && ((agent.indexOf('windows') > -1) || (agent.indexOf('macintosh') > -1) || (agent.indexOf('linux') > -1)) && agent.indexOf('mobile') < 0 && agent.indexOf('android') < 0),
-
+    var touchCapable = ('ontouchstart' in window),
+	
         settings = {
             tap_pixel_range: 5,
             swipe_h_threshold: 50,
@@ -45,14 +44,14 @@
             taphold_threshold: 750,
             doubletap_int: 500,
 
-            touch_capable: ('ontouchstart' in window && !isChromeDesktop),
+            touch_capable: touchCapable,
             orientation_support: ('orientation' in window && 'onorientationchange' in window),
 
-            startevent:  (('ontouchstart' in window && !isChromeDesktop) ? 'touchstart' : 'mousedown'),
-            endevent:    (('ontouchstart' in window && !isChromeDesktop) ? 'touchend' : 'mouseup'),
-            moveevent:   (('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'mousemove'),
-            tapevent:    ('ontouchstart' in window && !isChromeDesktop) ? 'tap' : 'click',
-            scrollevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'scroll',
+            startevent:  (touchCapable) ? 'touchstart' : 'mousedown',
+            endevent:    (touchCapable) ? 'touchend' : 'mouseup',
+            moveevent:   (touchCapable) ? 'touchmove' : 'mousemove',
+            tapevent:    (touchCapable) ? 'tap' : 'click',
+            scrollevent: (touchCapable) ? 'touchmove' : 'scroll',
 
             hold_timer: null,
             tap_timer: null
