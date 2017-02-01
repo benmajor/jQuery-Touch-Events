@@ -48,8 +48,10 @@
             touch_capable: ('ontouchstart' in window && !isChromeDesktop),
             orientation_support: ('orientation' in window && 'onorientationchange' in window),
 
-            startevent:  (('ontouchstart' in window && !isChromeDesktop) ? 'touchstart' : 'mousedown'),
-            endevent:    (('ontouchstart' in window && !isChromeDesktop) ? 'touchend' : 'mouseup'),
+            startevent:    (('onpointerdown' in window) ? 'pointerdown' :
+                ('ontouchstart' in window && !isChromeDesktop) ? 'touchstart' : 'mousedown'),
+            endevent:    (('onpointerdown' in window) ? 'pointerup' :
+                ('touchend' in window && !isChromeDesktop) ? 'touchstart' : 'mouseup'),
             moveevent:   (('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'mousemove'),
             tapevent:    ('ontouchstart' in window && !isChromeDesktop) ? 'tap' : 'click',
             scrollevent: ('ontouchstart' in window && !isChromeDesktop) ? 'touchmove' : 'scroll',
@@ -455,7 +457,6 @@
                     y: 0
                 },
                 touches;
-
             $this.on(settings.startevent, function tapFunc1(e) {
                 $this.data('callee1', tapFunc1);
 
