@@ -246,6 +246,11 @@ The value you define is the difference in pixels that the user must move before 
 
 ``data-ythreshold`` defines the vertical threshold.
 
+**Update as of 1.0.7:**
+Following requests from users and contributors, as of 1.0.7 it is now possible to also define the `doubletap` threshold via jQuery's `data-` attributes as follows:
+
+``data-threshold`` defines the amount of time (in milliseconds) after which the `doubletap` event is fired on the target element.
+
 ## 7. Utility Functions:
 
 In addition to the numerous additional events that are provided, the library also includes a number of utility functions that can be used to further leverage the power of native events within your website or application. These utility functions can be used for unifying basic events, such as `tapstart` or `mousedown`.
