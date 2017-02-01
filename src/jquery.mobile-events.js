@@ -213,6 +213,11 @@
 
                     end_x = start_pos.x;
                     end_y = start_pos.y;
+                    
+                    // Get the element's threshold:
+                    
+                    var ele_threshold = ($this.parent().data('threshold')) ? $this.parent().data('threshold') : $this.data('threshold'),
+                        threshold = (typeof ele_threshold !== 'undefined' && ele_threshold !== false && parseInt(ele_threshold)) ? parseInt(ele_threshold) : settings.taphold_threshold; 
 
                     settings.hold_timer = window.setTimeout(function () {
 
@@ -247,7 +252,7 @@
                             $this.data('callee1', tapHoldFunc1);
                             triggerCustomEvent(thisObject, 'taphold', e, touchData);
                         }
-                    }, settings.taphold_threshold);
+                    }, threshold);
 
                     return true;
                 }
