@@ -2,7 +2,7 @@
  * jQuery Mobile Events
  * by Ben Major
  *
- * Copyright 2011-2015, Ben Major
+ * Copyright 2011-2017, Ben Major
  * Licensed under the MIT License:
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
