@@ -87,23 +87,14 @@ $ npm install git+https://github.com/benmajor/jQuery-Touch-Events.git
 ```
 
 ### 3. Usage:
-All of the events outlined above have been written using jQuery's ``event.special`` object, and so can be used in conjunction with jQuery's event handling functions, as well as shortcut wrappers. As a result, all of the events that are supported by this library may be handled using any of jQuery's own event-specific methods, such as `bind()`, `on()`, `live()` (for legacy) and `one()`. 
+All of the events outlined above have been written using jQuery's ``event.special`` object, and so can be used in conjunction with jQuery's event handling functions, as well as shortcut wrappers. As a result, all of the events that are supported by this library may be handled using any of jQuery's own event-specific methods, such as `on()` and `one()`. 
 
 The following code snippets showcase some basic usage with jQuery:
 
 **Binding a ``tap`` event to an element:**  
-```
-$('#myElement').bind('tap', function(e) { 
-    console.log('User tapped #myElement'); 
-});
-```
 
-**Using with ``.on()`` and ``.live()``:**  
-```
-$('#myElement').live('tap', function(e) { 
-    console.log('User tapped #myElement'); 
-});
-```  
+When binding, you should use jQuery's `on()` function as follows (avoid the use of `live()` and `bind()` as these are now deprecated and will be removed from future versions of jQuery).
+
 ```
 $('#myElement').on('tap', function(e) { 
     console.log('User tapped #myElement'); 
@@ -115,16 +106,10 @@ $('#myElement').on('tap', function(e) {
 $('#myElement').trigger('tap');
 ```
 
-**Removing the event with ``.off()``, ``.die()`` and ``.unbind()``:**  
+**Removing the event:**  
 ```
 $('#myElement').off('tap', handler);
 ```  
-```
-$('#myElement').die('tap', handler);
-```  
-```
-$('#myElement').unbind('tap', handler);
-```
 
 **Using method wrapper:**  
 ```
