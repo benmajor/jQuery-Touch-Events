@@ -63,6 +63,7 @@ After almost 2 years in public beta, I am pleased to announce that the library i
 
 
 jQuery Touch Events, as the name suggests, require only the jQuery library (version 1.7+) to run. You should download the latest release from the `src` folder, and include the Javascript file within your project, **after** jQuery has been included. It is recommended to also wrap your code inside the `DOMReady` callback function of jQuery (`$(function() {  })`, for example). 
+
 **Manual installation:**
 
 Once you have downloaded the JS files from the master branch, you should include them using the following code:
@@ -71,7 +72,7 @@ Once you have downloaded the JS files from the master branch, you should include
 <script type="text/javascript" src="path/to/jquery.mobile-events.min.js"></script>
 ```
 
-The awesome guys over at cdnjs have kindly added the library to their CDN so you can include it as follows directly into your application:
+The awesome guys over at [cdnjs](https://cdnjs.com/libraries/jquery-touch-events) have kindly added the library to their CDN so you can include it as follows directly into your application:
 
 ```
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-touch-events/1.0.5/jquery.mobile-events.js"></script>
