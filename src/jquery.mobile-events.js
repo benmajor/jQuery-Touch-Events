@@ -289,6 +289,7 @@
                 if (e.which && e.which !== 1) {
                     return false;
                 }
+                
                 $this.data('doubletapped', false);
                 origTarget = e.target;
                 $this.data('callee1', doubleTapFunc1);
@@ -305,7 +306,9 @@
                             'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - ($this.offset() ? $this.offset().top : 0)) : Math.round(e.pageY - ($this.offset() ? $this.offset().top : 0))
                         },
                         'time': Date.now(),
-                        'target': e.target
+                        'target': e.target,
+                        'element': e.originalEvent.srcElement,
+                        'index':   $(e.target).index()
                     };
                 }
 
@@ -318,7 +321,7 @@
                 window.clearTimeout(action);
                 $this.data('callee2', doubleTapFunc2);
 
-                if (delta < settings.doubletap_int && (e.target == origTarget) && delta > 100) {
+                if (delta < settings.doubletap_int && ($(e.target).index() == firstTap.index) && delta > 100) {
                     $this.data('doubletapped', true);
                     window.clearTimeout(settings.tap_timer);
 
@@ -333,7 +336,9 @@
                             'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - ($this.offset() ? $this.offset().top : 0)) : Math.round(e.pageY - ($this.offset() ? $this.offset().top : 0))
                         },
                         'time': Date.now(),
-                        'target': e.target
+                        'target': e.target,
+                        'element': e.originalEvent.srcElement,
+                        'index': $(e.target).index()
                     };
 
                     var touchData = {
