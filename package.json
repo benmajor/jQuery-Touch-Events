@@ -1,6 +1,6 @@
 {
   "name": "jquery-touch-events",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Polyfill to remove click delays on browsers with touch UIs.",
   "maintainers": [
     {
