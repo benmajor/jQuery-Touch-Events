@@ -23,6 +23,9 @@ As explained, the events are each triggered by native touch events, or alternati
 
 After almost 2 years in public beta, I am pleased to announce that the library is now officially launched as **version 1.0.0**. I'll be updating the version history over time with digests of fixes, features and improvements:
 
++ **Version 1.0.9** (2017-06-07)
+  + Fixes a bug where binding to multiple elements with the same selector caused issues with `doubletap`.
+
 + **Version 1.0.8** (2017-02-01)
   + Fixes a bug where certain instances of Chrome on touch devices did not correctly fire events.
   + Added license info to minified script.
