@@ -82,8 +82,12 @@
                 $this = $(thisObject);
 			
             $this.on(settings.startevent, function tapStartFunc(e) {
-				
                 $this.data('callee', tapStartFunc);
+
+                if (! e.originalEvent) {
+                    return;
+                }
+
                 if (e.which && e.which !== 1) {
                     return false;
                 }
@@ -120,7 +124,11 @@
     			
             $this.on(settings.moveevent, function tapMoveFunc(e) {
                 $this.data('callee', tapMoveFunc);
-    			
+
+                if (! e.originalEvent) {
+                    return;
+                }
+
                 var origEvent = e.originalEvent,
                     touchData = {
                         'position': {
@@ -153,6 +161,10 @@
             $this.on(settings.endevent, function tapEndFunc(e) {
                 // Touch event data:
                 $this.data('callee', tapEndFunc);
+
+                if (! e.originalEvent) {
+                    return;
+                }
 
                 var origEvent = e.originalEvent;
                 var touchData = {
@@ -190,6 +202,10 @@
                 end_y = 0;
 
             $this.on(settings.startevent, function tapHoldFunc1(e) {
+                if (! e.originalEvent) {
+                    return;
+                }
+
                 if (e.which && e.which !== 1) {
                     return false;
                 } else {
@@ -262,6 +278,10 @@
             })
             .on(settings.moveevent, function tapHoldFunc3(e) {
                 $this.data('callee3', tapHoldFunc3);
+
+                if (! e.originalEvent) {
+                    return;
+                }
 				
                 end_x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                 end_y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
@@ -286,6 +306,10 @@
 				cooling = false;
 
             $this.on(settings.startevent, function doubleTapFunc1(e) {
+                if (! e.originalEvent) {
+                    return;
+                }
+
                 if (e.which && e.which !== 1) {
                     return false;
                 }
@@ -314,7 +338,10 @@
 
                 return true;
             }).on(settings.endevent, function doubleTapFunc2(e) {
-				
+                if (! e.originalEvent) {
+                    return;
+                }
+
                 var now = Date.now();
                 var lastTouch = $this.data('lastTouch') || now + 1;
                 var delta = now - lastTouch;
@@ -387,6 +414,10 @@
                 };
 
             $this.on(settings.startevent, function singleTapFunc1(e) {
+                if (! e.originalEvent) {
+                    return;
+                }
+
                 if (e.which && e.which !== 1) {
                     return false;
                 } else {
@@ -402,6 +433,11 @@
                 }
             }).on(settings.endevent, function singleTapFunc2(e) {
                 $this.data('callee2', singleTapFunc2);
+
+                if (! e.originalEvent) {
+                    return;
+                }
+
                 if (e.target == origTarget) {
                     
                     // Get the end point:
@@ -463,6 +499,10 @@
             $this.on(settings.startevent, function tapFunc1(e) {
                 $this.data('callee1', tapFunc1);
 
+                if (! e.originalEvent) {
+                    return;
+                }
+
                 if( e.which && e.which !== 1 )
 				{
                     return false;
@@ -480,6 +520,10 @@
                 }
             }).on(settings.endevent, function tapFunc2(e) {
                 $this.data('callee2', tapFunc2);
+
+                if (! e.originalEvent) {
+                    return;
+                }
 
                 // Only trigger if they've started, and the target matches:
                 var end_x = (e.originalEvent.targetTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX,
@@ -540,6 +584,10 @@
             // Screen touched, store the original coordinate
 
             function touchStart(e) {
+                if (! e.originalEvent) {
+                    return;
+                }
+
                 $this = $(e.currentTarget);
                 $this.data('callee1', touchStart);
                 originalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
@@ -566,6 +614,10 @@
             // Store coordinates as finger is swiping
 
             function touchMove(e) {
+                if (! e.originalEvent) {
+                    return;
+                }
+
                 $this = $(e.currentTarget);
                 $this.data('callee2', touchMove);
                 finalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
@@ -631,6 +683,10 @@
             }
 
             function touchEnd(e) {
+                if (! e.originalEvent) {
+                    return;
+                }
+
                 $this = $(e.currentTarget);
                 var swipedir = "";
                 $this.data('callee3', touchEnd);
