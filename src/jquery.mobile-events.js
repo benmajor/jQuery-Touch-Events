@@ -4,7 +4,7 @@
  *
  * Copyright 2011-2017, Ben Major
  * Licensed under the MIT License:
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -22,7 +22,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- * 
+ *
  */
 
 "use strict";
@@ -36,7 +36,7 @@
     // purports support for touch events even if the underlying hardware
     // does not!
     var touchCapable = ('ontouchstart' in window),
-	
+
         settings = {
             tap_pixel_range: 5,
             swipe_h_threshold: 50,
@@ -56,7 +56,7 @@
             hold_timer: null,
             tap_timer: null
         };
-    
+
     // Convenience functions:
     $.isTouchCapable = function() { return settings.touch_capable; };
     $.getStartEvent  = function() { return settings.startevent;    };
@@ -64,7 +64,7 @@
     $.getMoveEvent   = function() { return settings.moveevent;     };
     $.getTapEvent    = function() { return settings.tapevent;      };
     $.getScrollEvent = function() { return settings.scrollevent;   };
-    
+
     // Add Event shortcuts:
     $.each(['tapstart', 'tapend', 'tapmove', 'tap', 'tap2', 'tap3', 'tap4', 'singletap', 'doubletap', 'taphold', 'swipe', 'swipeup', 'swiperight', 'swipedown', 'swipeleft', 'swipeend', 'scrollstart', 'scrollend', 'orientationchange'], function (i, name) {
         $.fn[name] = function (fn) {
@@ -77,13 +77,11 @@
     // tapstart Event:
     $.event.special.tapstart = {
         setup: function () {
-			
+
             var thisObject = this,
                 $this = $(thisObject);
-			
-            $this.on(settings.startevent, function tapStartFunc(e) {
-                $this.data('callee', tapStartFunc);
 
+            function tapStartFunc(e) {
                 if (! e.originalEvent) {
                     return;
                 }
@@ -105,26 +103,26 @@
                         'time': Date.now(),
                         'target': e.target
                     };
-				
+
                 triggerCustomEvent(thisObject, 'tapstart', e, touchData);
                 return true;
-            });
+            };
+
+            $this.on(settings.startevent, $this.data.tapStartFunc = tapStartFunc);
         },
 
         remove: function () {
-            $(this).off(settings.startevent, $(this).data.callee);
+            $(this).off(settings.startevent, $(this).data.tapStartFunc);
         }
     };
-	
+
     // tapmove Event:
     $.event.special.tapmove = {
-    	setup: function() {
+        setup: function() {
             var thisObject = this,
             $this = $(thisObject);
-    			
-            $this.on(settings.moveevent, function tapMoveFunc(e) {
-                $this.data('callee', tapMoveFunc);
 
+            function tapMoveFunc(e) {
                 if (! e.originalEvent) {
                     return;
                 }
@@ -137,18 +135,20 @@
                         },
                         'offset': {
                             'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - ($this.offset() ? $this.offset().left : 0)) : Math.round(e.pageX - ($this.offset() ? $this.offset().left : 0)),
-							'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - ($this.offset() ? $this.offset().top : 0)) : Math.round(e.pageY - ($this.offset() ? $this.offset().top : 0))
+                            'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - ($this.offset() ? $this.offset().top : 0)) : Math.round(e.pageY - ($this.offset() ? $this.offset().top : 0))
                         },
                         'time': Date.now(),
                         'target': e.target
                     };
-    				
+
                 triggerCustomEvent(thisObject, 'tapmove', e, touchData);
                 return true;
-            });
+            }
+
+            $this.on(settings.moveevent, $this.data.tapMoveFunc = tapMoveFunc);
         },
         remove: function() {
-            $(this).off(settings.moveevent, $(this).data.callee);
+            $(this).off(settings.moveevent, $(this).data.tapMoveFunc);
         }
     };
 
@@ -158,10 +158,7 @@
             var thisObject = this,
                 $this = $(thisObject);
 
-            $this.on(settings.endevent, function tapEndFunc(e) {
-                // Touch event data:
-                $this.data('callee', tapEndFunc);
-
+            function tapEndFunc(e) {
                 if (! e.originalEvent) {
                     return;
                 }
@@ -181,10 +178,12 @@
                 };
                 triggerCustomEvent(thisObject, 'tapend', e, touchData);
                 return true;
-            });
+            }
+
+            $this.on(settings.endevent, $this.data.tapEndFunc = tapEndFunc);
         },
         remove: function () {
-            $(this).off(settings.endevent, $(this).data.callee);
+            $(this).off(settings.endevent, $(this).data.tapEndFunc);
         }
     };
 
@@ -201,7 +200,7 @@
                 end_x = 0,
                 end_y = 0;
 
-            $this.on(settings.startevent, function tapHoldFunc1(e) {
+            function tapHoldFunc1(e) {
                 if (! e.originalEvent) {
                     return;
                 }
@@ -228,11 +227,11 @@
 
                     end_x = start_pos.x;
                     end_y = start_pos.y;
-                    
+
                     // Get the element's threshold:
-                    
+
                     var ele_threshold = ($this.parent().data('threshold')) ? $this.parent().data('threshold') : $this.data('threshold'),
-                        threshold = (typeof ele_threshold !== 'undefined' && ele_threshold !== false && parseInt(ele_threshold)) ? parseInt(ele_threshold) : settings.taphold_threshold; 
+                        threshold = (typeof ele_threshold !== 'undefined' && ele_threshold !== false && parseInt(ele_threshold)) ? parseInt(ele_threshold) : settings.taphold_threshold;
 
                     settings.hold_timer = window.setTimeout(function () {
 
@@ -249,7 +248,7 @@
                                 },
                                 endOffset = {
                                     'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - ($this.offset() ? $this.offset().left : 0)) : Math.round(e.pageX - ($this.offset() ? $this.offset().left : 0)),
-									'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - ($this.offset() ? $this.offset().top : 0)) : Math.round(e.pageY - ($this.offset() ? $this.offset().top : 0))
+                                    'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - ($this.offset() ? $this.offset().top : 0)) : Math.round(e.pageY - ($this.offset() ? $this.offset().top : 0))
                                 };
                             var duration = end_time - start_time;
 
@@ -264,32 +263,37 @@
                                 'duration': duration,
                                 'target': e.target
                             };
-                            $this.data('callee1', tapHoldFunc1);
                             triggerCustomEvent(thisObject, 'taphold', e, touchData);
                         }
                     }, threshold);
 
                     return true;
                 }
-            }).on(settings.endevent, function tapHoldFunc2() {
-                $this.data('callee2', tapHoldFunc2);
+            }
+
+            function tapHoldFunc2() {
                 $this.data('tapheld', false);
                 window.clearTimeout(settings.hold_timer);
-            })
-            .on(settings.moveevent, function tapHoldFunc3(e) {
-                $this.data('callee3', tapHoldFunc3);
+            }
 
+            function tapHoldFunc3(e) {
                 if (! e.originalEvent) {
                     return;
                 }
-				
+
                 end_x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                 end_y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
-            });
+            }
+
+            $this.on(settings.startevent, $this.data.tapHoldFunc1 = tapHoldFunc1)
+                .on(settings.endevent, $this.data.tapHoldFunc2 = tapHoldFunc2)
+                .on(settings.moveevent, $this.data.tapHoldFunc3 = tapHoldFunc3);
         },
 
         remove: function () {
-            $(this).off(settings.startevent, $(this).data.callee1).off(settings.endevent, $(this).data.callee2).off(settings.moveevent, $(this).data.callee3);
+            $(this).off(settings.startevent, $(this).data.tapHoldFunc1)
+                .off(settings.endevent, $(this).data.tapHoldFunc2)
+                .off(settings.moveevent, $(this).data.tapHoldFunc3);
         }
     };
 
@@ -305,7 +309,7 @@
 				cooloff,
 				cooling = false;
 
-            $this.on(settings.startevent, function doubleTapFunc1(e) {
+            function doubleTapFunc1(e) {
                 if (! e.originalEvent) {
                     return;
                 }
@@ -313,10 +317,9 @@
                 if (e.which && e.which !== 1) {
                     return false;
                 }
-                
+
                 $this.data('doubletapped', false);
                 origTarget = e.target;
-                $this.data('callee1', doubleTapFunc1);
 
                 origEvent = e.originalEvent;
                 if (!firstTap) {
@@ -337,7 +340,9 @@
                 }
 
                 return true;
-            }).on(settings.endevent, function doubleTapFunc2(e) {
+            }
+
+            function doubleTapFunc2(e) {
                 if (! e.originalEvent) {
                     return;
                 }
@@ -346,7 +351,6 @@
                 var lastTouch = $this.data('lastTouch') || now + 1;
                 var delta = now - lastTouch;
                 window.clearTimeout(action);
-                $this.data('callee2', doubleTapFunc2);
 
                 if (delta < settings.doubletap_int && ($(e.target).index() == firstTap.index) && delta > 100) {
                     $this.data('doubletapped', true);
@@ -375,16 +379,16 @@
                     };
 
                     if (!cooling) {
-                    	triggerCustomEvent(thisObject, 'doubletap', e, touchData);
+                        triggerCustomEvent(thisObject, 'doubletap', e, touchData);
                         firstTap = null;
                     }
-                    
+
                     cooling = true;
-                    
+
                     cooloff = window.setTimeout(function () {
-                    	cooling = false;
+                        cooling = false;
                     }, settings.doubletap_int);
-					
+
                 } else {
                     $this.data('lastTouch', now);
                     action = window.setTimeout(function () {
@@ -393,10 +397,14 @@
                     }, settings.doubletap_int, [e]);
                 }
                 $this.data('lastTouch', now);
-            });
+            }
+
+            $this.on(settings.startevent, $this.data.doubleTapFunc1 = doubleTapFunc1)
+                .on(settings.endevent, $this.data.doubleTapFunc2 = doubleTapFunc2);
         },
         remove: function () {
-            $(this).off(settings.startevent, $(this).data.callee1).off(settings.endevent, $(this).data.callee2);
+            $(this).off(settings.startevent, $(this).data.doubleTapFunc1)
+                .off(settings.endevent, $(this).data.doubleTapFunc2);
         }
     };
 
@@ -413,7 +421,7 @@
                     y: 0
                 };
 
-            $this.on(settings.startevent, function singleTapFunc1(e) {
+            function singleTapFunc1(e) {
                 if (! e.originalEvent) {
                     return;
                 }
@@ -423,33 +431,32 @@
                 } else {
                     startTime = Date.now();
                     origTarget = e.target;
-                    $this.data('callee1', singleTapFunc1);
 
                     // Get the start x and y position:
                     start_pos.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                     start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
-                    
+
                     return true;
                 }
-            }).on(settings.endevent, function singleTapFunc2(e) {
-                $this.data('callee2', singleTapFunc2);
+            }
 
+            function singleTapFunc2(e) {
                 if (! e.originalEvent) {
                     return;
                 }
 
                 if (e.target == origTarget) {
-                    
+
                     // Get the end point:
                     var end_pos_x = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageX : e.pageX,
                         end_pos_y = (e.originalEvent.changedTouches) ? e.originalEvent.changedTouches[0].pageY : e.pageY;
-                    
+
                     // We need to check if it was a taphold:
 
                     settings.tap_timer = window.setTimeout(function () {
-                        
+
                         var diff_x = (start_pos.x - end_pos_x), diff_y = (start_pos.y - end_pos_y);
-                        
+
                         if(!$this.data('doubletapped') && !$this.data('tapheld') && (((start_pos.x == end_pos_x) && (start_pos.y == end_pos_y)) || (diff_x >= -(settings.tap_pixel_range) && diff_x <= settings.tap_pixel_range && diff_y >= -(settings.tap_pixel_range) && diff_y <= settings.tap_pixel_range))) {
 
                             var origEvent = e.originalEvent;
@@ -460,12 +467,12 @@
                                 },
                                 'offset': {
                                     'x': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageX - ($this.offset() ? $this.offset().left : 0)) : Math.round(e.pageX - ($this.offset() ? $this.offset().left : 0)),
-									'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - ($this.offset() ? $this.offset().top : 0)) : Math.round(e.pageY - ($this.offset() ? $this.offset().top : 0))
+                                    'y': (settings.touch_capable) ? Math.round(origEvent.changedTouches[0].pageY - ($this.offset() ? $this.offset().top : 0)) : Math.round(e.pageY - ($this.offset() ? $this.offset().top : 0))
                                 },
                                 'time': Date.now(),
                                 'target': e.target
                             };
-                            
+
                             // Was it a taphold?
                             if((touchData.time - startTime) < settings.taphold_threshold)
                             {
@@ -474,11 +481,15 @@
                         }
                     }, settings.doubletap_int);
                 }
-            });
+            }
+
+            $this.on(settings.startevent, $this.data.singleTapFunc1 = singleTapFunc1)
+                .on(settings.endevent, $this.data.singleTapFunc2 = singleTapFunc2);
         },
 
         remove: function () {
-            $(this).off(settings.startevent, $(this).data.callee1).off(settings.endevent, $(this).data.callee2);
+            $(this).off(settings.startevent, $(this).data.singleTapFunc1)
+                .off(settings.endevent, $(this).data.singleTapFunc2);
         }
     };
 
@@ -496,31 +507,29 @@
                 },
                 touches;
 
-            $this.on(settings.startevent, function tapFunc1(e) {
-                $this.data('callee1', tapFunc1);
-
+            function tapFunc1(e) {
                 if (! e.originalEvent) {
                     return;
                 }
 
                 if( e.which && e.which !== 1 )
-				{
+                {
                     return false;
                 }
-				else
-				{
+                else
+                {
                     started = true;
                     start_pos.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                     start_pos.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
                     start_time = Date.now();
                     origTarget = e.target;
-					
+
                     touches = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches : [ e ];
                     return true;
                 }
-            }).on(settings.endevent, function tapFunc2(e) {
-                $this.data('callee2', tapFunc2);
+            }
 
+            function tapFunc2(e) {
                 if (! e.originalEvent) {
                     return;
                 }
@@ -531,11 +540,11 @@
                     diff_x = (start_pos.x - end_x),
                     diff_y = (start_pos.y - end_y),
                     eventName;
-					
+
                 if (origTarget == e.target && started && ((Date.now() - start_time) < settings.taphold_threshold) && ((start_pos.x == end_x && start_pos.y == end_y) || (diff_x >= -(settings.tap_pixel_range) && diff_x <= settings.tap_pixel_range && diff_y >= -(settings.tap_pixel_range) && diff_y <= settings.tap_pixel_range))) {
                     var origEvent = e.originalEvent;
                     var touchData = [ ];
-					
+
                     for( var i = 0; i < touches.length; i++)
                     {
                         var touch = {
@@ -550,17 +559,21 @@
                             'time': Date.now(),
                             'target': e.target
                         };
-                    	
+
                         touchData.push( touch );
                     }
-                    
+
                     triggerCustomEvent(thisObject, 'tap', e, touchData);
                 }
-            });
+            }
+
+            $this.on(settings.startevent, $this.data.tapFunc1 = tapFunc1)
+                .on(settings.endevent, $this.data.tapFunc2 = tapFunc2);
         },
 
         remove: function () {
-            $(this).off(settings.startevent, $(this).data.callee1).off(settings.endevent, $(this).data.callee2);
+            $(this).off(settings.startevent, $(this).data.tapFunc1)
+                .off(settings.endevent, $(this).data.tapFunc2);
         }
     };
 
@@ -589,7 +602,6 @@
                 }
 
                 $this = $(e.currentTarget);
-                $this.data('callee1', touchStart);
                 originalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                 originalCoord.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
                 finalCoord.x = originalCoord.x;
@@ -619,7 +631,6 @@
                 }
 
                 $this = $(e.currentTarget);
-                $this.data('callee2', touchMove);
                 finalCoord.x = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageX : e.pageX;
                 finalCoord.y = (e.originalEvent.targetTouches) ? e.originalEvent.targetTouches[0].pageY : e.pageY;
 
@@ -629,8 +640,8 @@
                 var ele_x_threshold = ($this.parent().data('xthreshold')) ? $this.parent().data('xthreshold') : $this.data('xthreshold'),
                     ele_y_threshold = ($this.parent().data('ythreshold')) ? $this.parent().data('ythreshold') : $this.data('ythreshold'),
                     h_threshold = (typeof ele_x_threshold !== 'undefined' && ele_x_threshold !== false && parseInt(ele_x_threshold)) ? parseInt(ele_x_threshold) : settings.swipe_h_threshold,
-                    v_threshold = (typeof ele_y_threshold !== 'undefined' && ele_y_threshold !== false && parseInt(ele_y_threshold)) ? parseInt(ele_y_threshold) : settings.swipe_v_threshold; 
-                
+                    v_threshold = (typeof ele_y_threshold !== 'undefined' && ele_y_threshold !== false && parseInt(ele_y_threshold)) ? parseInt(ele_y_threshold) : settings.swipe_v_threshold;
+
                 if (originalCoord.y > finalCoord.y && (originalCoord.y - finalCoord.y > v_threshold)) {
                     swipedir = 'swipeup';
                 }
@@ -689,7 +700,6 @@
 
                 $this = $(e.currentTarget);
                 var swipedir = "";
-                $this.data('callee3', touchEnd);
                 if (hasSwiped) {
                     // We need to check if the element to which the event was bound contains a data-xthreshold | data-vthreshold:
                     var ele_x_threshold = $this.data('xthreshold'),
@@ -744,13 +754,15 @@
                 hasSwiped = false;
             }
 
-            $this.on(settings.startevent, touchStart);
-            $this.on(settings.moveevent, touchMove);
-            $this.on(settings.endevent, touchEnd);
+            $this.on(settings.startevent, $this.data.touchStart = touchStart);
+            $this.on(settings.moveevent, $this.data.touchMove = touchMove);
+            $this.on(settings.endevent, $this.data.touchEnd = touchEnd);
         },
 
         remove: function () {
-            $(this).off(settings.startevent, $(this).data.callee1).off(settings.moveevent, $(this).data.callee2).off(settings.endevent, $(this).data.callee3);
+            $(this).off(settings.startevent, $(this).data.touchStart)
+                .off(settings.moveevent, $(this).data.touchMove)
+                .off(settings.endevent, $(this).data.touchEnd);
         }
     };
 
@@ -768,9 +780,7 @@
             }
 
             // iPhone triggers scroll after a small delay; use touchmove instead
-            $this.on(settings.scrollevent, function scrollFunc(event) {
-                $this.data('callee', scrollFunc);
-
+            function scrollFunc(event) {
                 if (!scrolling) {
                     trigger(event, true);
                 }
@@ -779,11 +789,13 @@
                 timer = setTimeout(function () {
                     trigger(event, false);
                 }, 50);
-            });
+            }
+
+            $this.on(settings.scrollevent, $this.data.scrollFunc = scrollFunc);
         },
 
         remove: function () {
-            $(this).off(settings.scrollevent, $(this).data.callee);
+            $(this).off(settings.scrollevent, $(this).data.scrollFunc);
         }
     };
 
@@ -928,9 +940,14 @@
         swipeend: 'swipe',
         tap2: 'tap'
     }, function (e, srcE) {
+        var emptyFunc = function () {};
+
         $.event.special[e] = {
             setup: function () {
-                $(this).on(srcE, $.noop);
+                $(this).on(srcE, emptyFunc);
+            },
+            teardown: function () {
+                $(this).off(srcE, emptyFunc);
             }
         };
     });
