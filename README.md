@@ -27,6 +27,8 @@ After almost 2 years in public beta, I am pleased to announce that the library i
   + Added two-finger tap event (`tap2`).
   + Added two-finger taphold event (`taphold2`).
   + Added setter functions to easily set thresholds globally.
+  + Fixed a bug where the offset position of elements was sometimes incorrect.
+  + Other minor bug fixes.
   
 + **Version 1.0.9** (2017-06-07)
   + Fixes a bug where binding to multiple elements with the same selector caused issues with `doubletap`.
