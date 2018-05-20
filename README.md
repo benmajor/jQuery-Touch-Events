@@ -23,6 +23,11 @@ As explained, the events are each triggered by native touch events, or alternati
 
 After almost 2 years in public beta, I am pleased to announce that the library is now officially launched as **version 1.0.0**. I'll be updating the version history over time with digests of fixes, features and improvements:
 
++ **Version 2.0.0** (2018-05-20)
+  + Added two-finger tap event (`tap2`).
+  + Added two-finger taphold event (`taphold2`).
+  + Added setter functions to easily set thresholds globally.
+  
 + **Version 1.0.9** (2017-06-07)
   + Fixes a bug where binding to multiple elements with the same selector caused issues with `doubletap`.
 
