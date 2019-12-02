@@ -23,6 +23,9 @@ As explained, the events are each triggered by native touch events, or alternati
 
 After almost 2 years in public beta, I am pleased to announce that the library is now officially launched as **version 1.0.0**. I'll be updating the version history over time with digests of fixes, features and improvements:
 
++ **Version 2.0.1** (2019-12-02)
+  + Fix for bug [#156](https://github.com/benmajor/jQuery-Touch-Events/issues/156)
+
 + **Version 2.0.0** (2018-05-20)
   + Added two-finger tap event (`tap2`).
   + Added two-finger taphold event (`taphold2`).
