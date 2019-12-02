@@ -2,7 +2,7 @@
  * jQuery Mobile Events
  * by Ben Major
  *
- * Copyright 2011-2017, Ben Major
+ * Copyright 2011-2019, Ben Major
  * Licensed under the MIT License:
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -247,7 +247,7 @@
                     var ele_threshold = ($this.parent().data('threshold')) ? $this.parent().data('threshold') : $this.data('threshold'),
                         threshold = (typeof ele_threshold !== 'undefined' && ele_threshold !== false && parseInt(ele_threshold)) ? parseInt(ele_threshold) : settings.taphold_threshold; 
 
-                    settings.hold_timer = window.setTimeout(function () {
+                    $this.data('hold_timer', window.setTimeout(function () {
 
                         var diff_x = (start_pos.x - end_x),
                             diff_y = (start_pos.y - end_y);
@@ -286,14 +286,14 @@
 							
                             triggerCustomEvent(thisObject, evt_name, e, touchData);
                         }
-                    }, threshold);
+                    }, threshold) );
 
                     return true;
                 }
             }).on(settings.endevent, function tapHoldFunc2() {
                 $this.data('callee2', tapHoldFunc2);
                 $this.data('tapheld', false);
-                window.clearTimeout(settings.hold_timer);
+                window.clearTimeout( $this.data('hold_timer') );
             })
             .on(settings.moveevent, function tapHoldFunc3(e) {
                 $this.data('callee3', tapHoldFunc3);
