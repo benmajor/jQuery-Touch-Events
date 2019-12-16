@@ -92,7 +92,7 @@
 	// Set the pixel range for tapas:
 	$.touch.setTapRange = function( range ) {
 		if( typeof range !== 'number' ) { throw new Error('Ranger parameter must be a type of number'); }
-		settings.tap_pixel_range = threshold;
+		settings.tap_pixel_range = range;
 	};
 	
     // Add Event shortcuts:
