@@ -2,12 +2,10 @@
   "name": "jquery-touch-events",
   "version": "2.0.0",
   "description": "Polyfill to remove click delays on browsers with touch UIs.",
-  "maintainers": [
-    {
-        "name": "Ben Major",
-        "email": "ben.major88@gmail.com"
-    }
-  ],
+  "maintainers": [{
+    "name": "Ben Major",
+    "email": "ben.major88@gmail.com"
+  }],
   "author": {
     "name": "Ben Major",
     "email": "ben.major88@gmail.com"
@@ -23,10 +21,8 @@
     "mobile",
     "touch"
   ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://opensource.org/licenses/MIT"
-    }
-  ]
+  "licenses": [{
+    "type": "MIT",
+    "url": "http://opensource.org/licenses/MIT"
+  } ]
 }
