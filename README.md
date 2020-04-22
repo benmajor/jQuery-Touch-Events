@@ -23,49 +23,41 @@ As explained, the events are each triggered by native touch events, or alternati
 
 After almost 2 years in public beta, I am pleased to announce that the library is now officially launched as **version 1.0.0**. I'll be updating the version history over time with digests of fixes, features and improvements:
 
++ **Version 2.0.2** (2020-04-21)
+  + Fix for binding events to `document` and `window`.
++ Update NPM repo so that latest releases are detected.
 + **Version 2.0.1** (2019-12-02)
   + Fix for bug [#156](https://github.com/benmajor/jQuery-Touch-Events/issues/156)
-
 + **Version 2.0.0** (2018-05-20)
   + Added two-finger tap event (`tap2`).
   + Added two-finger taphold event (`taphold2`).
   + Added setter functions to easily set thresholds globally.
   + Fixed a bug where the offset position of elements was sometimes incorrect.
   + Other minor bug fixes.
-  
 + **Version 1.0.9** (2017-06-07)
   + Fixes a bug where binding to multiple elements with the same selector caused issues with `doubletap`.
-
 + **Version 1.0.8** (2017-02-01)
   + Fixes a bug where certain instances of Chrome on touch devices did not correctly fire events.
   + Added license info to minified script.
-
 + **Version 1.0.7** (2017-02-01)
   + Added threshold support for `taphold`
-
 + **Version 1.0.6** (2016-11-16)
   + Added slop factor for `singletap`
   + Fixed a bug where `offset()` was sometimes called on `null` (instead of `window`).
-  
 + **Version 1.0.5** (2015-11-13)
   + Fixed a major bug where the reported `offset` position of events was incorrect when inside of a parent element. 
-
 + **Version 1.0.4** (2015-11-12)
   + Regressed from `MSPointerEvent` for compatibility with IE11 and Edge
   + Removed multi-name event for `tap`.
-
 + **Version 1.0.3** (2015-11-10)
   + Numerous minor bug fixes 
   + Fixes a bug where the offset position returned by events relative to the **current target**, not the bound target.
-
 + **Version 1.0.2** (2015-08-26)
   + Numerous bug fixes
   + Added support for `MSPointerEvent`
-
 + **Version 1.0.1** (2015-08-21)
   + Added Bower package for easy install
   + Fixed a bug where Internet Explorer under Windows Mobile did not trigger certain events.  
-
 + **Version 1.0.0** (2015-07-18)
   + The library officially entered 1.0.0 after minor bug fixes and final adjustments.
 
@@ -97,7 +89,7 @@ $ bower install jquery-touch-events
 jQuery Touch Events can also be installed using NPM as follows:
 
 ```
-$ npm install git+https://github.com/benmajor/jQuery-Touch-Events.git
+$ npm i @benmajor/jquery-touch-events
 ```
 
 ### 3. Usage:
@@ -123,7 +115,7 @@ $('#myElement').trigger('tap');
 **Removing the event:**  
 ```
 $('#myElement').off('tap', handler);
-```  
+```
 
 **Using method wrapper:**  
 ```
