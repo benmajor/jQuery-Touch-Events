@@ -1,6 +1,6 @@
 {
   "name": "@benmajor/jquery-touch-events",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Polyfill to remove click delays and unify pointer device events.",
   "main": "src/jquery.mobile-events.js",
   "scripts": {

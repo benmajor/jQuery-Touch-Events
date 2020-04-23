@@ -23,6 +23,8 @@ As explained, the events are each triggered by native touch events, or alternati
 
 After almost 2 years in public beta, I am pleased to announce that the library is now officially launched as **version 1.0.0**. I'll be updating the version history over time with digests of fixes, features and improvements:
 
++ **Version 2.0.3** (2020-04-23)
+  + Fix for bug [#165](https://github.com/benmajor/jQuery-Touch-Events/issues/165)
 + **Version 2.0.2** (2020-04-21)
   + Fix for binding events to `document` and `window`.
 + Update NPM repo so that latest releases are detected.
