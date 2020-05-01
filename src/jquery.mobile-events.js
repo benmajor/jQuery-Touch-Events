@@ -36,7 +36,7 @@
             tap_pixel_range: 5,
             swipe_h_threshold: 50,
             swipe_v_threshold: 50,
-            taphold_threshold: 750,
+            taphold_threshold: 500,
             doubletap_int: 500,
             shake_threshold: 15,
 
