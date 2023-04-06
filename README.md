@@ -72,13 +72,13 @@ jQuery Touch Events, as the name suggests, require only the jQuery library (vers
 
 Once you have downloaded the JS files from the master branch, you should include them using the following code:
 
-```
+```html
 <script type="text/javascript" src="path/to/jquery.mobile-events.min.js"></script>
 ```
 
 The awesome guys over at [cdnjs](https://cdnjs.com/libraries/jquery-touch-events) have kindly added the library to their CDN so you can include it as follows directly into your application:
 
-```
+```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-touch-events/1.0.5/jquery.mobile-events.js"></script>
 ```
 
@@ -94,6 +94,12 @@ jQuery Touch Events can also be installed using NPM as follows:
 $ npm i @benmajor/jquery-touch-events
 ```
 
+If you are installing the library via NPM, after running the `npm i` command above, you'll also need to ensure that you import the modules into you project files wherever you wish to use the events. Place the following line alongside your other imports:
+
+```js
+import "@benmajor/jquery-touch-events";
+```
+
 ### 3. Usage:
 All of the events outlined above have been written using jQuery's ``event.special`` object, and so can be used in conjunction with jQuery's event handling functions, as well as shortcut wrappers. As a result, all of the events that are supported by this library may be handled using any of jQuery's own event-specific methods, such as `on()` and `one()`. 
 
@@ -103,24 +109,24 @@ The following code snippets showcase some basic usage with jQuery:
 
 When binding, you should use jQuery's `on()` function as follows (avoid the use of `live()` and `bind()` as these are now deprecated and will be removed from future versions of jQuery).
 
-```
+```js
 $('#myElement').on('tap', function(e) { 
     console.log('User tapped #myElement'); 
 });
 ```
 
 **Triggering the event:**  
-```
+```js
 $('#myElement').trigger('tap');
 ```
 
 **Removing the event:**  
-```
+```js
 $('#myElement').off('tap', handler);
 ```
 
 **Using method wrapper:**  
-```
+```js
 $('#myElement').tap(function(e) { 
     console.log('User tapped #myElement'); 
 });
@@ -128,7 +134,7 @@ $('#myElement').tap(function(e) {
 
 **Method chaining:**  
 Chaining has also been preserved, so you can easily use these events in conjunction with other jQuery functions, or attach multiple events in a single, chained LOC:  
-```
+```js
 $('#myElement').singletap(function() { 
     console.log('singletap');
 }).doubletap(function() { 
@@ -176,7 +182,7 @@ This event is triggered when the orientation of the device is changed. Please no
 ## 5. Callback Data:
 Each event now features a second argument that can be passed to the specified callback function. This argument includes some basic data relating specifically to the event, and can be accessed as a standard JavaScript object. To hook into this parameter, you should use the following code:
 
-```
+```js
 $(element).swipeend(function(e, touch) {  });
 ```
 
